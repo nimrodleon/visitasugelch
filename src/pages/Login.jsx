@@ -1,9 +1,9 @@
 import { Fragment } from "react"
 
-export const Dashboard = () => {
+export const Login = () => {
     return(
         <Fragment>
-            adfasdf
+            Login
         </Fragment>
     )
 }
