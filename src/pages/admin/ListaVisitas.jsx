@@ -6,16 +6,22 @@ import { DataTable } from "primereact/datatable"
 import { Column } from "primereact/column"
 import { Paginator } from "primereact/paginator"
 import { Button } from "primereact/button"
+import { RegistrarVisitaModal } from "./RegistrarVisitaModal"
 
 export const ListaVisitas = () => {
     const [dates, setDates] = useState(null)
     const [products, setProducts] = useState([])
     const [first, setFirst] = useState(0)
     const [rows, setRows] = useState(10)
+    const [visible, setVisible] = useState(false)
 
     const onPageChange = (event) => {
         setFirst(event.first)
         setRows(event.rows)
+    }
+
+    const handleRegistrarVisita = () => {
+        setVisible(true)
     }
 
     return (
@@ -29,7 +35,7 @@ export const ListaVisitas = () => {
                         <i className="pi pi-search" />
                         <InputText placeholder="Buscar" />
                     </span>
-                    <Button icon="pi pi-plus" severity="info" label="Registrar Visita"/>
+                    <Button onClick={handleRegistrarVisita} icon="pi pi-plus" severity="info" label="Registrar Visita" />
                 </div>
                 <DataTable value={products} tableStyle={{ minWidth: '50rem' }}>
                     <Column field="dni" header="D.N.I"></Column>
@@ -40,6 +46,10 @@ export const ListaVisitas = () => {
                 </DataTable>
                 <Paginator first={first} rows={rows} totalRecords={120} rowsPerPageOptions={[10, 20, 30]} onPageChange={onPageChange} />
             </main>
+            <RegistrarVisitaModal
+                visible={visible}
+                setVisible={setVisible}
+            />
         </Fragment>
     )
 }
