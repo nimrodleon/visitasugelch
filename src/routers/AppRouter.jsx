@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import { Login, Portal } from "../pages"
+import { Portal } from "../pages"
 import { ListaUsuarios, ListaVisitantes, ListaVisitas } from "../pages/admin"
 
 export const AppRouter = () => {
@@ -13,7 +13,6 @@ export const AppRouter = () => {
                         <Route path="/" element={<ListaVisitas />} />
                     </Routes>
                 } />
-                <Route path="/login" element={<Login />} />
                 <Route path="/*" element={<Portal />} />
             </Routes>
         </BrowserRouter>
