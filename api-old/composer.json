@@ -1,0 +1,14 @@
+{
+    "require": {
+        "slim/slim": "4.*",
+        "guzzlehttp/psr7": "2",
+        "illuminate/database": "^10.48.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\Handlers\\": "handlers/",
+            "App\\Migrations\\": "migrations/",
+            "App\\Models\\": "models/"
+        }
+    }
+}

@@ -9,6 +9,7 @@ class Asistencia extends Model
 {
     protected $table = 'asistencias';
     protected $fillable = ['visitante_id', 'fecha', 'hora'];
+    public $timestamps = false;
 
     public function visitante(): BelongsTo
     {

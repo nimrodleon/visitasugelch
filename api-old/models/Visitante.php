@@ -9,8 +9,9 @@ class Visitante extends Model
 {
     protected $table = 'visitantes';
     protected $fillable = ['dni', 'ap_paterno', 'ap_materno', 'nombres'];
+    public $timestamps = false;
 
-    public function asistencias() : HasMany
+    public function asistencias(): HasMany
     {
         return $this->hasMany(Asistencia::class);
     }

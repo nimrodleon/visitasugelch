@@ -1,0 +1,15 @@
+### Obtener todos los usuarios
+GET http://localhost:8080/usuarios
+
+### Crear un nuevo usuario
+POST http://localhost:8080/usuarios
+Content-Type: application/json
+
+{
+    "dni": "40124512",
+    "nombres": "Jose",
+    "apellidos": "Perez",
+    "rol": "admin",
+    "usuario": "joseperez",
+    "password": "123456"
+}
