@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Asistencia;
-use Illuminate\Http\Client\Request;
+use Illuminate\Http\Request;
 
 class AsistenciaController extends Controller
 {

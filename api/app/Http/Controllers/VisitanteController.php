@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Visitante;
-use Illuminate\Http\Client\Request;
+use Illuminate\Http\Request;
 
 class VisitanteController extends Controller
 {
