@@ -1,0 +1,34 @@
+### Obtener todos los visitantes
+GET http://localhost:8080/visitantes
+
+### Parámetros de consulta opcionales:
+- perPage: número de elementos por página (por defecto: 10)
+- query: consulta de búsqueda
+
+### Crear un nuevo visitante
+POST http://localhost:8080/visitantes
+Content-Type: application/json
+
+{
+    "dni": "12345678",
+    "ap_paterno": "Pérez",
+    "ap_materno": "Gómez",
+    "nombres": "Juan"
+}
+
+### Obtener un visitante por ID
+GET http://localhost:8080/visitantes/1
+
+### Actualizar un visitante existente
+PUT http://localhost:8080/visitantes/1
+
+### Cuerpo de la solicitud:
+{
+    "dni": "87654321",
+    "ap_paterno": "Gómez",
+    "ap_materno": "Pérez",
+    "nombres": "Juan"
+}
+
+### Eliminar un visitante
+DELETE http://localhost:8080/visitantes/1

@@ -1,0 +1,28 @@
+### Obtener todas las asistencias
+GET http://localhost:8080/asistencias
+
+### Obtener una asistencia específica
+GET http://localhost:8080/asistencias/{id}
+
+### Crear una nueva asistencia
+POST http://localhost:8080/asistencias
+Content-Type: application/json
+
+{
+    "visitante_id": 1,
+    "fecha": "2022-01-01",
+    "hora": "09:00:00"
+}
+
+### Actualizar una asistencia existente
+PUT http://localhost:8080/asistencias/{id}
+Content-Type: application/json
+
+{
+    "visitante_id": 2,
+    "fecha": "2022-01-02",
+    "hora": "10:00:00"
+}
+
+### Eliminar una asistencia
+DELETE http://localhost:8080/asistencias/{id}

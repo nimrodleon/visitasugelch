@@ -1,6 +1,3 @@
-### index
-GET http://localhost:8080
-
 ### Obtener todos los usuarios
 GET http://localhost:8080/users
 
@@ -9,10 +6,29 @@ POST http://localhost:8080/users
 Content-Type: application/json
 
 {
-    "dni": "40124512",
+    "dni": "40124010",
     "nombres": "Jose",
     "apellidos": "Perez",
     "rol": "admin",
-    "usuario": "joseperez",
+    "usuario": "joseperez1",
     "password": "123456"
 }
+
+### Obtener un usuario por ID
+GET http://localhost:8080/users/6
+
+### Actualizar un usuario por ID
+PUT http://localhost:8080/users/6
+Content-Type: application/json
+
+{
+    "dni": "40124010",
+    "nombres": "Jose",
+    "apellidos": "Perez",
+    "rol": "admin",
+    "usuario": "joseperez2",
+    "password": "123456"
+}
+
+### Eliminar un usuario por ID
+DELETE http://localhost:8080/users/6

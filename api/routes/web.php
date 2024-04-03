@@ -34,3 +34,5 @@ $router->post('/asistencias', 'AsistenciaController@store');
 $router->get('/asistencias/{asistencia}', 'AsistenciaController@show');
 $router->put('/asistencias/{asistencia}', 'AsistenciaController@update');
 $router->delete('/asistencias/{asistencia}', 'AsistenciaController@destroy');
+
+$router->get('/example', 'ExampleController@index');
