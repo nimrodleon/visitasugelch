@@ -1,11 +1,16 @@
+@token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MTIzNTEyNzUsImp0aSI6Ild1RXhUL2FzaXV3dmhmMzg0N1lsU3JVWWZ5a2hQcTlZclhJczM5Nk91RnM9IiwiaXNzIjoibHVtZW4tand0IiwibmJmIjoxNzEyMzUxMjc1LCJleHAiOjE3MTI0Mzc2NzUsImRhdGEiOnsidXNlcklkIjoxLCJ1c3VhcmlvIjoiYWRtaW4ifX0.98QYIMe8vaLSgaRC33sq6znEwGk5lI4VYYak8tu1tcw
+
 ### Obtener todas las asistencias
 GET http://localhost:8080/asistencias
+Authorization: Bearer {{token}}
 
 ### Obtener una asistencia específica
 GET http://localhost:8080/asistencias/{id}
+Authorization: Bearer {{token}}
 
 ### Crear una nueva asistencia
 POST http://localhost:8080/asistencias
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -16,6 +21,7 @@ Content-Type: application/json
 
 ### Actualizar una asistencia existente
 PUT http://localhost:8080/asistencias/{id}
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -26,3 +32,4 @@ Content-Type: application/json
 
 ### Eliminar una asistencia
 DELETE http://localhost:8080/asistencias/{id}
+Authorization: Bearer {{token}}

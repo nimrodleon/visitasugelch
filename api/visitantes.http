@@ -1,5 +1,8 @@
+@token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MTIzNTEyNzUsImp0aSI6Ild1RXhUL2FzaXV3dmhmMzg0N1lsU3JVWWZ5a2hQcTlZclhJczM5Nk91RnM9IiwiaXNzIjoibHVtZW4tand0IiwibmJmIjoxNzEyMzUxMjc1LCJleHAiOjE3MTI0Mzc2NzUsImRhdGEiOnsidXNlcklkIjoxLCJ1c3VhcmlvIjoiYWRtaW4ifX0.98QYIMe8vaLSgaRC33sq6znEwGk5lI4VYYak8tu1tcw
+
 ### Obtener todos los visitantes
 GET http://localhost:8080/visitantes
+Authorization: Bearer {{token}}
 
 ### Parámetros de consulta opcionales:
 - perPage: número de elementos por página (por defecto: 10)
@@ -7,6 +10,7 @@ GET http://localhost:8080/visitantes
 
 ### Crear un nuevo visitante
 POST http://localhost:8080/visitantes
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -18,9 +22,11 @@ Content-Type: application/json
 
 ### Obtener un visitante por ID
 GET http://localhost:8080/visitantes/1
+Authorization: Bearer {{token}}
 
 ### Actualizar un visitante existente
 PUT http://localhost:8080/visitantes/1
+Authorization: Bearer {{token}}
 
 ### Cuerpo de la solicitud:
 {
@@ -32,3 +38,4 @@ PUT http://localhost:8080/visitantes/1
 
 ### Eliminar un visitante
 DELETE http://localhost:8080/visitantes/1
+Authorization: Bearer {{token}}
