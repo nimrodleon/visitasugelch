@@ -1,0 +1,8 @@
+POST http://localhost:8080/login HTTP/1.1
+Host: your-api-host.com
+Content-Type: application/json
+
+{
+    "usuario": "admin",
+    "password": "secret"
+}

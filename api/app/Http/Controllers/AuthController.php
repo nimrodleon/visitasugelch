@@ -2,26 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Firebase\JWT\JWT;
 
 class AuthController extends Controller
 {
-    private $jwtKey = 'your-secret-key'; // Reemplaza esto con tu clave secreta
+    private $jwtKey = 'your-secret-key';
 
-    public function authenticate(Request $request)
+    public function login(Request $request)
     {
         $this->validate($request, [
-            'email' => 'required|email',
+            'usuario' => 'required',
             'password' => 'required'
         ]);
 
-        // Normalmente, buscarías al usuario en tu base de datos aquí.
-        // Este es solo un ejemplo, así que asumiremos que el usuario está autenticado.
+        $user = User::where('usuario', $request->input('usuario'))->first();
+        if (!$user || !app('hash')->check($request->input('password'), $user->password)) {
+            return response()->json(['error' => 'Credenciales inválidas'], 401);
+        }
 
         $tokenId    = base64_encode(random_bytes(32));
         $issuedAt   = new \DateTimeImmutable();
-        $expire     = $issuedAt->modify('+1 day')->getTimestamp();      // Puede ajustar el tiempo de expiración del token como desees
+        $expire     = $issuedAt->modify('+1 day')->getTimestamp();
 
         $token = [
             'iat'  => $issuedAt->getTimestamp(),         // Tiempo de emisión del token
@@ -30,8 +33,8 @@ class AuthController extends Controller
             'nbf'  => $issuedAt->getTimestamp(),         // No antes
             'exp'  => $expire,                           // Tiempo de expiración
             'data' => [                                  // Datos relacionados con el usuario
-                'userId'   => 1,                         // Aquí iría el ID del usuario
-                'email' => $request->input('email'),     // Aquí iría el email del usuario
+                'userId'   => $user->id,                 // Aquí iría el ID del usuario
+                'usuario' => $user->usuario,             // Aquí iría el nombre usuario
             ]
         ];
 

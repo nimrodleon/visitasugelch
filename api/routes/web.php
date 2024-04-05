@@ -36,3 +36,5 @@ $router->put('/asistencias/{asistencia}', 'AsistenciaController@update');
 $router->delete('/asistencias/{asistencia}', 'AsistenciaController@destroy');
 
 $router->get('/example', 'ExampleController@index');
+
+$router->post('/login', 'AuthController@login');
