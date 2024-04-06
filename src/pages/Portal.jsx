@@ -1,16 +1,24 @@
-import { Fragment, useState } from "react"
+import { Fragment, useEffect, useState } from "react"
 import { Header } from "../components"
 import { Calendar } from "primereact/calendar"
 import { InputText } from "primereact/inputtext"
 import { Paginator } from "primereact/paginator"
 import { DataTable } from "primereact/datatable"
 import { Column } from "primereact/column"
+import { useNavigate } from "react-router-dom"
 
 export const Portal = () => {
+    const navigate = useNavigate()
     const [dates, setDates] = useState(null)
     const [products, setProducts] = useState([])
     const [first, setFirst] = useState(0)
     const [rows, setRows] = useState(10)
+
+    useEffect(() => {
+        if (localStorage.getItem('AuthToken')) {
+            navigate('/admin')
+        }
+    }, [])
 
     const onPageChange = (event) => {
         setFirst(event.first)
