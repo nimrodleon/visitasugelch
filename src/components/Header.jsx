@@ -5,8 +5,10 @@ import { Fragment, useEffect, useRef, useState } from "react"
 import { LoginModal } from "./LoginModal"
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog"
 import { Menu } from "primereact/menu"
+import { useNavigate } from "react-router-dom"
 
 export const Header = () => {
+    const navigate = useNavigate()
     const menuRight = useRef(null)
     const [visible, setVisible] = useState(false)
 
@@ -22,11 +24,13 @@ export const Header = () => {
             items: [
                 {
                     label: 'Asistencia',
-                    icon: 'pi pi-stopwatch'
+                    icon: 'pi pi-stopwatch',
+                    command: () => navigate('/admin')
                 },
                 {
                     label: 'Visitantes',
                     icon: 'pi pi-users',
+                    command: () => navigate('/admin/visitantes')
                 },
                 {
                     label: 'Oficinas',

@@ -4,9 +4,7 @@ import { Dialog } from "primereact/dialog"
 import { InputText } from "primereact/inputtext"
 import { Password } from "primereact/password"
 import * as Yup from "yup"
-import { useNavigate } from "react-router-dom"
 import { getAccessTokenWithLogin } from "../api"
-import { useEffect } from "react"
 
 const LoginSchema = Yup.object().shape({
     usuario: Yup.string().required('El usuario es requerido'),
@@ -14,14 +12,7 @@ const LoginSchema = Yup.object().shape({
 })
 
 export const LoginModal = (props) => {
-    const navigate = useNavigate()
     const { visible, setVisible } = props
-
-    useEffect(() => {
-        if (localStorage.getItem('AuthToken')) {
-            navigate('/admin')
-        }
-    }, [])
 
     const formik = useFormik({
         initialValues: {
