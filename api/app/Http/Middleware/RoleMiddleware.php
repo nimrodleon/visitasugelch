@@ -9,7 +9,7 @@ class RoleMiddleware
 {
     public function handle(Request $request, Closure $next, $role)
     {
-        if ($request->user->role != $role) {
+        if ($request->user->rol != $role) {
             // Unauthorized response if user role doesn't match
             return response()->json([
                 'error' => 'User does not have the right role.'

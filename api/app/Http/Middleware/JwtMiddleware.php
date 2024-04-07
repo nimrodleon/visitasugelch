@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 
 class JwtMiddleware
 {
-    private $jwtKey = 'your-secret-key'; // Reemplaza esto con tu clave secreta
+    private $jwtKey = "2sByhGN2ZKx0ExV96tYEPQshCThzP7AKYMs+tizpmyI=";
 
     public function handle(Request $request, Closure $next)
     {

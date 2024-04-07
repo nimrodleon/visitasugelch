@@ -8,7 +8,7 @@ use Firebase\JWT\JWT;
 
 class AuthController extends Controller
 {
-    private $jwtKey = 'your-secret-key';
+    private $jwtKey = "2sByhGN2ZKx0ExV96tYEPQshCThzP7AKYMs+tizpmyI=";
 
     public function login(Request $request)
     {
