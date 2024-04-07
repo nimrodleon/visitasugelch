@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('visitantes', function (Blueprint $table) {
+        Schema::create('funcionarios', function (Blueprint $table) {
             $table->id();
             $table->string('dni')->unique()->nullable();
             $table->string('nombres_completos')->nullable();
+            $table->unsignedBigInteger('lugar_id')->nullable();
+            $table->foreign('lugar_id')->references('id')->on('lugares');
         });
     }
 
@@ -23,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('visitantes');
+        Schema::dropIfExists('funcionarios');
     }
 };
