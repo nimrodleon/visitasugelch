@@ -27,7 +27,7 @@ export const ListaVisitantes = () => {
     return (
         <Fragment>
             <Header />
-            <main className="container">
+            <main className="mx-2">
                 <h3 className="my-1">LISTA DE VISITANTES</h3>
                 <div className="flex gap-3 mb-3">
                     <span className="p-input-icon-left">

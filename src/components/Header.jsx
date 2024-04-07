@@ -33,7 +33,7 @@ export const Header = () => {
                     command: () => navigate('/admin/visitantes')
                 },
                 {
-                    label: 'Oficinas',
+                    label: 'Lugares',
                     icon: 'pi pi-sitemap'
                 },
                 {
@@ -42,7 +42,8 @@ export const Header = () => {
                 },
                 {
                     label: 'Config. Accesos',
-                    icon: 'pi pi-lock'
+                    icon: 'pi pi-lock',
+                    command: () => navigate('/admin/usuarios')
                 }
             ]
         }
@@ -73,16 +74,14 @@ export const Header = () => {
 
     return (
         <Fragment>
-            <header className="grid container">
-                <div className="col">
-                    <Link to="/">
+            <header className="flex justify-content-between align-items-center shadow-2 px-2">
+            <Link to="/">
                         <img src={image} alt="header" style={{
                             width: 600,
                             height: 'auto'
                         }} />
                     </Link>
-                </div>
-                <div className="col flex justify-content-end gap-2 my-2">
+                <div className="flex gap-2">
                     {
                         !isAuth && <Button onClick={handleShowLoginModal} label="Iniciar Sessión" />
                     }
