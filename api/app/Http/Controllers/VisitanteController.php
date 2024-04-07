@@ -3,10 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Visitante;
+use App\Services\PadronService;
 use Illuminate\Http\Request;
 
 class VisitanteController extends Controller
 {
+    private $padronService;
+
+    public function __construct()
+    {
+        $this->padronService = new PadronService();
+    }
+
     public function index(Request $request)
     {
         $perPage = $request->input('perPage', 10);
@@ -37,6 +45,32 @@ class VisitanteController extends Controller
     {
         $visitante = Visitante::findOrFail($id);
         return response()->json($visitante);
+    }
+
+    public function buscarPorDni($dni)
+    {
+        $visitante = Visitante::where('dni', $dni)->first();
+        if (!$visitante) {
+            $contribuyente = $this->padronService->buscarPorDni($dni);
+            if (!$contribuyente) {
+                return response()->json([
+                    'error' =>
+                    'No se encontró el DNI en la base de datos ni en el padrón'
+                ], 404);
+            } else {
+                $visitante = new Visitante();
+                $visitante->dni = $contribuyente['dni'];
+                $visitante->nombres_completos = $contribuyente['nombre'];
+                $visitante->save();
+            }
+        }
+        return response()->json($visitante);
+    }
+
+    public function buscarPorRuc($ruc)
+    {
+        $contribuyente = $this->padronService->buscarPorRuc($ruc);
+        return response()->json($contribuyente);
     }
 
     public function update(Request $request, $id)

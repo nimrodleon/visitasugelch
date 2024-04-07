@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Visitante extends Model
 {
     protected $table = 'visitantes';
-    protected $fillable = ['dni', 'ap_paterno', 'ap_materno', 'nombres'];
+    protected $fillable = ['dni', 'nombres_completos'];
     public $timestamps = false;
 
     public function asistencias(): HasMany

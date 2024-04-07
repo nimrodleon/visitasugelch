@@ -24,6 +24,14 @@ Content-Type: application/json
 GET http://localhost:8080/visitantes/1
 Authorization: Bearer {{token}}
 
+### Obtener un visitante por DNI
+GET http://localhost:8080/visitantes/70693076/dni
+Authorization: Bearer {{token}}
+
+### Obtener un visitante por RUC
+GET http://localhost:8080/visitantes/10447359982/ruc
+Authorization: Bearer {{token}}
+
 ### Actualizar un visitante existente
 PUT http://localhost:8080/visitantes/1
 Authorization: Bearer {{token}}

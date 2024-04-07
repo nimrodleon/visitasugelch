@@ -10,6 +10,8 @@ $router->post('/login', 'AuthController@login');
 $router->get('/asistencias', 'AsistenciaController@index');
 
 $router->group(['middleware' => 'jwt'], function () use ($router) {
+    $router->get('/visitantes/{dni}/dni', 'VisitanteController@buscarPorDni');
+    $router->get('/visitantes/{ruc}/ruc', 'VisitanteController@buscarPorRuc');
     $router->group(['middleware' => 'role:admin'], function () use ($router) {
         $router->get('/users', 'UserController@index');
         $router->post('/users', 'UserController@store');
