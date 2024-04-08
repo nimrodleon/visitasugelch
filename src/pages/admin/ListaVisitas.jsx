@@ -126,7 +126,7 @@ export const ListaVisitas = () => {
                             <span className="p-float-label" style={{ width: '100%' }}>
                                 <AutoComplete id="username" dropdown={true}
                                     style={{ width: '100%' }} inputStyle={{ width: '100%' }} />
-                                <label htmlFor="username">Lugar</label>
+                                <label htmlFor="username">Lugar y/o Oficina</label>
                             </span>
                             <Button icon="pi pi-plus" className="p-button-secondary" />
                         </div>

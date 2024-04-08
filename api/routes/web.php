@@ -13,6 +13,8 @@ $router->group(['middleware' => 'jwt'], function () use ($router) {
     $router->get('/visitantes/{dni}/dni', 'VisitanteController@buscarPorDni');
     $router->get('/visitantes/{ruc}/ruc', 'VisitanteController@buscarPorRuc');
     $router->get('/entidades/{visitante_id}/visitante', 'EntidadController@index');
+    $router->get('/lugares', 'LugarController@index');
+    $router->get('/funcionarios/{lugar_id}/lugar', 'FuncionarioController@index');
     $router->group(['middleware' => 'role:admin'], function () use ($router) {
         $router->get('/users', 'UserController@index');
         $router->post('/users', 'UserController@store');
@@ -28,11 +30,19 @@ $router->group(['middleware' => 'jwt'], function () use ($router) {
         $router->get('/entidades/{id}', 'EntidadController@show');
         $router->put('/entidades/{id}', 'EntidadController@update');
         $router->delete('/entidades/{id}', 'EntidadController@destroy');
+        $router->post('/lugares', 'LugarController@store');
+        $router->get('/lugares/{id}', 'LugarController@show');
+        $router->put('/lugares/{id}', 'LugarController@update');
+        $router->delete('/lugares/{id}', 'LugarController@destroy');
+        $router->post('/funcionarios', 'FuncionarioController@store');
+        $router->get('/funcionarios/{id}', 'FuncionarioController@show');
+        $router->put('/funcionarios/{id}', 'FuncionarioController@update');
+        $router->delete('/funcionarios/{id}', 'FuncionarioController@destroy');
     });
     $router->group(['middleware' => 'role:user'], function () use ($router) {
         $router->post('/asistencias', 'AsistenciaController@store');
         $router->get('/asistencias/{asistencia}', 'AsistenciaController@show');
         $router->put('/asistencias/{asistencia}', 'AsistenciaController@update');
-        $router->delete('/asistencias/{asistencia}', 'AsistenciaController@destroy');        
+        $router->delete('/asistencias/{asistencia}', 'AsistenciaController@destroy');
     });
 });
