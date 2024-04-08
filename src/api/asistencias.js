@@ -1,17 +1,18 @@
 import { axios } from "./axios"
 
-export async function getAsistencias(fromDate, toDate, query, perPage) {
+export async function getAsistencias(fromDate, toDate, query, currentPage = 1, perPage = 10) {
     const response = await axios.get('/asistencias', {
         params: {
             fromDate,
             toDate,
             query,
+            currentPage,
             perPage
         }
     })
     return response.data
 }
- 
+
 export async function createAsistencia(asistenciaData) {
     const response = await axios.post('/asistencias', asistenciaData)
     return response.data

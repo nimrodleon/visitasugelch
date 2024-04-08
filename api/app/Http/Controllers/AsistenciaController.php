@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Asistencia;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
 
 class AsistenciaController extends Controller
 {
@@ -13,9 +14,14 @@ class AsistenciaController extends Controller
         $toDate = $request->input('toDate');
         $searchQuery = $request->input('query');
         $perPage = $request->input('perPage', 10);
+        $currentPage = $request->input('currentPage', 1);
 
         $formattedFromDate = date('Y-m-d', strtotime($fromDate));
         $formattedToDate = date('Y-m-d', strtotime($toDate));
+
+        Paginator::currentPageResolver(function () use ($currentPage) {
+            return $currentPage;
+        });
 
         $asistencias = Asistencia::when($formattedFromDate && $formattedToDate, function ($query) use ($formattedFromDate, $formattedToDate) {
             return $query->whereBetween('fecha_registro', [$formattedFromDate, $formattedToDate]);

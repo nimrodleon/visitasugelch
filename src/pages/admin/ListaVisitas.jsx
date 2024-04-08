@@ -43,21 +43,30 @@ export const ListaVisitas = () => {
     const [funcionarios, setFuncionarios] = useState([])
     const [filteredFuncionarios, setFilteredFuncionarios] = useState([])
     const [asistencias, setAsistencias] = useState({ data: [] })
-
-    const [dates, setDates] = useState(null)
-    const [products, setProducts] = useState([])
-    const [first, setFirst] = useState(0)
-    const [rows, setRows] = useState(10)
+    const [pagination, setPagination] = useState({
+        first: 0, rows: 0, totalRecords: 0
+    })
     const [visible, setVisible] = useState(false)
 
     useEffect(() => {
         getAllLugares().then(response => setLugares(response))
+    }, [])
+
+    useEffect(() => {
         getAsistencias(
             new Date(new Date().setDate(new Date().getDate() - 15)),
             new Date(),
             '',
+            1,
             10,
-        ).then(response => setAsistencias(response))
+        ).then(response => {
+            setAsistencias(response)
+            setPagination({
+                first: (response.current_page - 1) * response.per_page,
+                rows: response.per_page,
+                totalRecords: response.total
+            })
+        })
     }, [])
 
     const formik = useFormik({
@@ -124,18 +133,40 @@ export const ListaVisitas = () => {
             search: Yup.string()
         }),
         onSubmit: async (values) => {
-            getAsistencias(values.dates[0], values.dates[1], values.search, 10)
-                .then(response => setAsistencias(response))
+            const currentPage = pagination.first / pagination.rows + 1
+            getAsistencias(
+                values.dates[0],
+                values.dates[1],
+                values.search || '',
+                currentPage,
+                pagination.rows
+            ).then(response => {
+                setAsistencias(response)
+                setPagination({
+                    first: (response.current_page - 1) * response.per_page,
+                    rows: response.per_page,
+                    totalRecords: response.total
+                })
+            })
         }
     })
 
     const onPageChange = (event) => {
-        setFirst(event.first)
-        setRows(event.rows)
-    }
-
-    const handleRegistrarVisita = () => {
-        setVisible(true)
+        const currentPage = event.first / event.rows + 1
+        getAsistencias(
+            queryForm.values.dates[0],
+            queryForm.values.dates[1],
+            queryForm.values.search || '',
+            currentPage,
+            event.rows
+        ).then(response => {
+            setAsistencias(response)
+            setPagination({
+                first: (response.current_page - 1) * response.per_page,
+                rows: response.per_page,
+                totalRecords: response.total
+            })
+        })
     }
 
     const handleGetVisitaPorDni = () => {
@@ -193,8 +224,6 @@ export const ListaVisitas = () => {
 
         setFilteredFuncionarios(_filteredItems)
     }
-
-
 
     return (
         <Fragment key={uuid}>
@@ -353,11 +382,13 @@ export const ListaVisitas = () => {
                     <Column field="nombre_lugar" header="Lugar Especifico"></Column>
                     <Column field="observaciones" header="Observación"></Column>
                 </DataTable>
-                <Paginator first={first} rows={rows} totalRecords={120} rowsPerPageOptions={[10, 20, 30]} onPageChange={onPageChange} />
+                <Paginator
+                    first={pagination.first}
+                    rows={pagination.rows}
+                    totalRecords={pagination.totalRecords}
+                    rowsPerPageOptions={[10, 20, 30]}
+                    onPageChange={onPageChange} />
             </Panel>
-            <pre>
-                {JSON.stringify(queryForm.values, null, 2)}
-            </pre>
             <Toast ref={toast} />
             <RegistrarVisitaModal
                 visible={visible}
