@@ -26,6 +26,7 @@ class AsistenciaController extends Controller
                         ->orWhere('nombres_visitante', 'like', '%' . $searchQuery . '%');
                 });
             })
+            ->orderBy('id', 'desc')
             ->paginate($perPage);
 
         return response()->json($asistencias);
@@ -33,7 +34,18 @@ class AsistenciaController extends Controller
 
     public function store(Request $request)
     {
-
+        $this->validate($request, [
+            'visitante_id' => 'required',
+            'nombres_visitante' => 'required',
+            'documento_visitante' => 'required',
+            'entidad_id' => 'required',
+            'rzn_social_entidad' => 'required',
+            'funcionario_id' => 'required',
+            'nombres_funcionario' => 'required',
+            'motivo_visita' => 'required',
+            'lugar_id' => 'required',
+            'nombre_lugar' => 'required',
+        ]);
         $asistencia = Asistencia::create($request->all());
         return response()->json($asistencia, 201);
     }
@@ -43,9 +55,10 @@ class AsistenciaController extends Controller
         return response()->json($asistencia);
     }
 
-    public function update(Request $request, Asistencia $asistencia)
+    public function marcar_hora_salida(Asistencia $asistencia)
     {
-        $asistencia->update($request->all());
+        $asistencia->hora_salida = date('H:i:s');
+        $asistencia->save();
         return response()->json($asistencia);
     }
 

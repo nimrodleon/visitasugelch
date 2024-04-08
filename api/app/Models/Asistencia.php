@@ -8,8 +8,6 @@ class Asistencia extends Model
 {
     protected $table = 'asistencias';
     protected $fillable = [
-        'fecha_registro',
-        'fecha_visita',
         'visitante_id',
         'nombres_visitante',
         'documento_visitante',
@@ -17,8 +15,6 @@ class Asistencia extends Model
         'rzn_social_entidad',
         'funcionario_id',
         'nombres_funcionario',
-        'hora_ingreso',
-        'hora_salida',
         'motivo_visita',
         'lugar_id',
         'nombre_lugar',
@@ -26,23 +22,14 @@ class Asistencia extends Model
     ];
     public $timestamps = false;
 
-    public function setFechaRegistroAttribute($value)
+    protected static function boot()
     {
-        $this->attributes['fecha_registro'] = date('Y-m-d', strtotime($value));
-    }
+        parent::boot();
 
-    public function setFechaVisitaAttribute($value)
-    {
-        $this->attributes['fecha_visita'] = date('Y-m-d', strtotime($value));
-    }
-
-    public function setHoraIngresoAttribute($value)
-    {
-        $this->attributes['hora_ingreso'] = date('H:i:s', strtotime($value));
-    }
-
-    public function setHoraSalidaAttribute($value)
-    {
-        $this->attributes['hora_salida'] = date('H:i:s', strtotime($value));
+        static::creating(function ($model) {
+            $model->fecha_registro = date('Y-m-d');
+            $model->fecha_visita = date('Y-m-d');
+            $model->hora_ingreso = date('H:i:s');
+        });
     }
 }

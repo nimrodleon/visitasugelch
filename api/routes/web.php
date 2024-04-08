@@ -42,7 +42,7 @@ $router->group(['middleware' => 'jwt'], function () use ($router) {
     $router->group(['middleware' => 'role:user'], function () use ($router) {
         $router->post('/asistencias', 'AsistenciaController@store');
         $router->get('/asistencias/{asistencia}', 'AsistenciaController@show');
-        $router->put('/asistencias/{asistencia}', 'AsistenciaController@update');
+        $router->patch('/asistencias/{asistencia}', 'AsistenciaController@marcar_hora_salida');
         $router->delete('/asistencias/{asistencia}', 'AsistenciaController@destroy');
     });
 });

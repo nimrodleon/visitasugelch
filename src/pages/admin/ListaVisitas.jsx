@@ -11,7 +11,7 @@ import { InputTextarea } from "primereact/inputtextarea"
 import { Panel } from "primereact/panel"
 import { AutoComplete } from "primereact/autocomplete"
 import { useFormik } from "formik"
-import { buscarVisitantePorDni, getAllLugares, getEntities, getFuncionariosByLugarId } from "../../api"
+import { buscarVisitantePorDni, createAsistencia, getAllLugares, getAsistencias, getEntities, getFuncionariosByLugarId } from "../../api"
 import { Toast } from "primereact/toast"
 import { v4 as uuidv4 } from "uuid"
 import * as Yup from "yup"
@@ -42,7 +42,7 @@ export const ListaVisitas = () => {
     const [filteredLugares, setFilteredLugares] = useState([])
     const [funcionarios, setFuncionarios] = useState([])
     const [filteredFuncionarios, setFilteredFuncionarios] = useState([])
-
+    const [asistencias, setAsistencias] = useState({ data: [] })
 
     const [dates, setDates] = useState(null)
     const [products, setProducts] = useState([])
@@ -52,6 +52,12 @@ export const ListaVisitas = () => {
 
     useEffect(() => {
         getAllLugares().then(response => setLugares(response))
+        getAsistencias(
+            new Date(new Date().setDate(new Date().getDate() - 15)),
+            new Date(),
+            '',
+            10,
+        ).then(response => setAsistencias(response))
     }, [])
 
     const formik = useFormik({
@@ -66,7 +72,29 @@ export const ListaVisitas = () => {
         },
         validationSchema: VisitaSchema,
         onSubmit: async (values) => {
-            console.log(values)
+            const formData = {
+                'visitante_id': visita.id,
+                'nombres_visitante': visita.nombres_completos,
+                'documento_visitante': visita.dni,
+                'entidad_id': values.entidad.id,
+                'rzn_social_entidad': values.entidad.rzn_social,
+                'funcionario_id': values.funcionario.id,
+                'nombres_funcionario': values.funcionario.nombres_completos,
+                'motivo_visita': values.motivo,
+                'lugar_id': values.lugar.id,
+                'nombre_lugar': values.lugar.nombre,
+                'observaciones': values.observacion,
+            }
+            createAsistencia(formData)
+                .then(response => {
+                    setAsistencias({
+                        ...asistencias,
+                        data: [
+                            response, ...asistencias.data
+                        ]
+                    })
+                    handleResetForm()
+                })
         }
     })
 
@@ -79,6 +107,27 @@ export const ListaVisitas = () => {
         formik.resetForm()
         setUuid(uuidv4())
     }
+
+    const queryForm = useFormik({
+        initialValues: {
+            dates: [
+                new Date(new Date().setDate(new Date().getDate() - 15)),
+                new Date()
+            ],
+            search: ''
+        },
+        validationSchema: Yup.object().shape({
+            dates: Yup.array().of(Yup.date())
+                .min(2, 'Fechas debe tener dos elementos')
+                .max(2, 'Fechas debe tener dos elementos')
+                .required('Fechas es requerido'),
+            search: Yup.string()
+        }),
+        onSubmit: async (values) => {
+            getAsistencias(values.dates[0], values.dates[1], values.search, 10)
+                .then(response => setAsistencias(response))
+        }
+    })
 
     const onPageChange = (event) => {
         setFirst(event.first)
@@ -267,27 +316,48 @@ export const ListaVisitas = () => {
             <Panel header="Registro de Visitas" className="mx-2">
                 <h3 className="text-center">Opciones de Busqueda</h3>
                 <div className="flex justify-content-center gap-3 mb-3">
-                    <Calendar value={dates} onChange={(e) => setDates(e.value)} selectionMode="range" showIcon />
+                    <Calendar
+                        value={queryForm.values.dates}
+                        onChange={async (e) => {
+                            queryForm.handleChange('dates')(e)
+                            try {
+                                await queryForm.validateForm()
+                                queryForm.handleSubmit()
+                            } catch (error) {
+                                console.log(error)
+                            }
+                        }}
+                        className={queryForm.errors.dates
+                            && queryForm.touched.dates
+                            && 'p-invalid'}
+                        selectionMode="range" showIcon />
                     <span className="p-input-icon-left">
                         <i className="pi pi-search" />
-                        <InputText placeholder="Buscar" />
+                        <InputText
+                            value={queryForm.values.search}
+                            onChange={queryForm.handleChange('search')}
+                            onKeyDown={(e) => e.key === 'Enter' && queryForm.handleSubmit()}
+                            placeholder="Buscar" />
                     </span>
                 </div>
-                <DataTable value={products} tableStyle={{ minWidth: '50rem' }}>
+                <DataTable value={asistencias.data} tableStyle={{ minWidth: '50rem' }}>
                     <Column field="fecha_registro" header="Fecha de Registro"></Column>
                     <Column field="fecha_visita" header="Fecha de Visita"></Column>
-                    <Column field="visitante" header="Visitante"></Column>
-                    <Column field="dni" header="Documento del visitante"></Column>
-                    <Column field="entidad_del_visitante" header="Entidad del visitante"></Column>
-                    <Column field="funcionario" header="Funcionario visitado"></Column>
+                    <Column field="nombres_visitante" header="Visitante"></Column>
+                    <Column field="documento_visitante" header="Documento del visitante"></Column>
+                    <Column field="rzn_social_entidad" header="Entidad del visitante"></Column>
+                    <Column field="nombres_funcionario" header="Funcionario visitado"></Column>
                     <Column field="hora_ingreso" header="Hora de Ingreso"></Column>
                     <Column field="hora_salida" header="Hora de Salida"></Column>
-                    <Column field="motivo" header="Motivo"></Column>
-                    <Column field="lugar" header="Lugar Especifico"></Column>
-                    <Column field="observación" header="Observación"></Column>
+                    <Column field="motivo_visita" header="Motivo"></Column>
+                    <Column field="nombre_lugar" header="Lugar Especifico"></Column>
+                    <Column field="observaciones" header="Observación"></Column>
                 </DataTable>
                 <Paginator first={first} rows={rows} totalRecords={120} rowsPerPageOptions={[10, 20, 30]} onPageChange={onPageChange} />
             </Panel>
+            <pre>
+                {JSON.stringify(queryForm.values, null, 2)}
+            </pre>
             <Toast ref={toast} />
             <RegistrarVisitaModal
                 visible={visible}
