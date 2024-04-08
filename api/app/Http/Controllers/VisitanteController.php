@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Entidad;
 use App\Models\Visitante;
 use App\Services\PadronService;
 use Illuminate\Http\Request;
@@ -62,6 +63,11 @@ class VisitanteController extends Controller
                 $visitante->dni = $contribuyente['dni'];
                 $visitante->nombres_completos = $contribuyente['nombre'];
                 $visitante->save();
+                $entidad = new Entidad();
+                $entidad->ruc = $contribuyente['ruc'];
+                $entidad->rzn_social = $contribuyente['nombre'];
+                $entidad->visitante_id = $visitante->id;
+                $entidad->save();
             }
         }
         return response()->json($visitante);

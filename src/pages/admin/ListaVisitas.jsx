@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react"
+import { Fragment, useRef, useState } from "react"
 import { Header } from "../../components"
 import { Calendar } from "primereact/calendar"
 import { InputText } from "primereact/inputtext"
@@ -10,13 +10,35 @@ import { RegistrarVisitaModal } from "./RegistrarVisitaModal"
 import { InputTextarea } from "primereact/inputtextarea"
 import { Panel } from "primereact/panel"
 import { AutoComplete } from "primereact/autocomplete"
+import { useFormik } from "formik"
+import { buscarVisitantePorDni, getEntities } from "../../api"
+import { Toast } from "primereact/toast"
 
 export const ListaVisitas = () => {
+    const [visita, setVisita] = useState({})
+    const toast = useRef(null)
+    const [entidades, setEntidades] = useState([])
+    const [filteredEntidades, setFilteredEntidades] = useState([])
+
+
+
     const [dates, setDates] = useState(null)
     const [products, setProducts] = useState([])
     const [first, setFirst] = useState(0)
     const [rows, setRows] = useState(10)
     const [visible, setVisible] = useState(false)
+
+    const formik = useFormik({
+        initialValues: {
+            dni: '',
+            nombres: '',
+            entidad: {},
+
+        },
+        onSubmit: async (values) => {
+
+        }
+    })
 
     const onPageChange = (event) => {
         setFirst(event.first)
@@ -27,6 +49,35 @@ export const ListaVisitas = () => {
         setVisible(true)
     }
 
+    const handleGetVisitaPorDni = () => {
+        buscarVisitantePorDni(formik.values.dni)
+            .then(response => {
+                setVisita(response)
+                console.log(response)
+                formik.setFieldValue('nombres', response.nombres_completos)
+                getEntities(response.id).then(response => setEntidades(response))
+            })
+            .catch(error => {
+                setVisita({})
+                formik.setFieldValue('nombres', '')
+                toast.current.show({ severity: 'error', summary: 'Info', detail: error.response.data.error })
+            })
+    }
+
+    const searchEntidades = (event) => {
+        let _filteredItems = []
+
+        if (!event.query.trim().length) {
+            _filteredItems = [...entidades]
+        } else {
+            _filteredItems = entidades.filter((item) => {
+                return item.rzn_social.toLowerCase().startsWith(event.query.toLowerCase())
+            })
+        }
+
+        setFilteredEntidades(_filteredItems);
+    }
+
     return (
         <Fragment>
             <Header />
@@ -35,22 +86,33 @@ export const ListaVisitas = () => {
                     <div className="col">
                         <div className="p-inputgroup flex-1">
                             <span className="p-float-label">
-                                <InputText id="username" style={{ width: '100%' }} />
+                                <InputText name="dni"
+                                    value={formik.values.dni}
+                                    onChange={formik.handleChange}
+                                    onKeyDown={(e) => e.key === 'Enter' && handleGetVisitaPorDni()}
+                                    style={{ width: '100%' }} />
                                 <label htmlFor="username">D.N.I</label>
                             </span>
-                            <Button icon="pi pi-search" severity="success" className="px-4" />
+                            <Button icon="pi pi-search" onClick={handleGetVisitaPorDni} severity="success" className="px-4" />
                         </div>
                     </div>
                     <div className="col">
                         <span className="p-float-label">
-                            <InputText id="username" style={{ width: '100%' }} />
+                            <InputText id="username"
+                                value={formik.values.nombres}
+                                readOnly
+                                style={{ width: '100%' }} />
                             <label htmlFor="username">Nombres y Apellidos</label>
                         </span>
                     </div>
                     <div className="col">
                         <div className="flex gap-2">
                             <span className="p-float-label" style={{ width: '100%' }}>
-                                <AutoComplete id="username" dropdown={true}
+                                <AutoComplete field="rzn_social" dropdown={true}
+                                    value={formik.values.entidad}
+                                    suggestions={filteredEntidades}
+                                    completeMethod={searchEntidades}
+                                    onChange={(e) => formik.setFieldValue('entidad', e.value)}
                                     style={{ width: '100%' }} inputStyle={{ width: '100%' }} />
                                 <label htmlFor="username">Entidad del Visitante</label>
                             </span>
@@ -94,6 +156,12 @@ export const ListaVisitas = () => {
                     <Button label="Limpiar" icon="pi pi-eraser" severity="secondary" />
                     <Button label="Guardar" icon="pi pi-save" severity="success" />
                 </div>
+                <pre>
+                    {JSON.stringify(entidades, null, 2)}
+                </pre>
+                <pre>
+                    {JSON.stringify(formik.values, null, 2)}
+                </pre>
             </Panel>
             <Panel header="Registro de Visitas" className="mx-2">
                 <h3 className="text-center">Opciones de Busqueda</h3>
@@ -120,6 +188,7 @@ export const ListaVisitas = () => {
                 </DataTable>
                 <Paginator first={first} rows={rows} totalRecords={120} rowsPerPageOptions={[10, 20, 30]} onPageChange={onPageChange} />
             </Panel>
+            <Toast ref={toast} />
             <RegistrarVisitaModal
                 visible={visible}
                 setVisible={setVisible}

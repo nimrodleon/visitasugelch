@@ -1,0 +1,21 @@
+@token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MTI1NDMzMzksImp0aSI6IktwNlgraTlEQUc0c1FKVDhlVGlBWE9SQzNqeXZKd2FsYzBGdTRxL1I0UkE9IiwiaXNzIjoibHVtZW4tand0IiwibmJmIjoxNzEyNTQzMzM5LCJleHAiOjE3MTI2Mjk3MzksImRhdGEiOnsidXNlcklkIjoxLCJ1c3VhcmlvIjoiYWRtaW4ifX0.mDWMIj714z5eoafOwaCCn9wQthqY_yy5FAVaSNipw0Q
+
+### Get all entities for a visitor
+GET http://localhost:8080/entidades/13/visitante
+Authorization: Bearer {{token}}
+
+### Create a new entity
+POST http://localhost:8080/entidades
+Authorization: Bearer {{token}}
+
+### Get a specific entity
+GET http://localhost:8080/entidades/{id}
+Authorization: Bearer {{token}}
+
+### Update a specific entity
+PUT http://localhost:8080/entidades/{id}
+Authorization: Bearer {{token}}
+
+### Delete a specific entity
+DELETE http://localhost:8080/entidades/{id}
+Authorization: Bearer {{token}}

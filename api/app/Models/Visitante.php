@@ -15,4 +15,9 @@ class Visitante extends Model
     {
         return $this->hasMany(Asistencia::class);
     }
+
+    public function entidades(): HasMany
+    {
+        return $this->hasMany(Entidad::class);
+    }
 }

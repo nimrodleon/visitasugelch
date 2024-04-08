@@ -1,3 +1,5 @@
 export * from './axios'
 export * from './auth'
 export * from './users'
+export * from './visitantes'
+export * from './entidades'
