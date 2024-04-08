@@ -33,7 +33,7 @@ export const UsuarioModal = (props) => {
         },
         validationSchema: UserSchema,
         onSubmit: values => {
-            if(userFormType === FormModalType.ADD) {
+            if (userFormType === FormModalType.ADD) {
                 createUser(values).then(response => {
                     console.log(response)
                     setVisible(false)
@@ -57,11 +57,12 @@ export const UsuarioModal = (props) => {
                         nombres: selectedUser.nombres,
                         apellidos: selectedUser.apellidos,
                         rol: selectedUser.rol,
-                        usuario: selectedUser.usuario
+                        usuario: selectedUser.usuario,
+                        password: ''
                     })
                 }
             }}
-            modal={true} draggable={false} visible={visible} onHide={() => {                
+            modal={true} draggable={false} visible={visible} onHide={() => {
                 formik.resetForm()
                 setVisible(false)
             }}>

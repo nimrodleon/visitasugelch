@@ -6,6 +6,7 @@ import { LoginModal } from "./LoginModal"
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog"
 import { Menu } from "primereact/menu"
 import { useNavigate } from "react-router-dom"
+import logo from "../assets/logo_ugel_chincheros.png"
 
 export const Header = () => {
     const navigate = useNavigate()
@@ -75,12 +76,20 @@ export const Header = () => {
     return (
         <Fragment>
             <header className="flex justify-content-between align-items-center shadow-2 px-2">
-            <Link to="/">
+                <div className="flex gap-2">
+                    <Link to="/">
                         <img src={image} alt="header" style={{
                             width: 600,
                             height: 'auto'
                         }} />
                     </Link>
+                    <Link to="/">
+                        <img src={logo} alt="logo" style={{
+                            width: 'auto',
+                            height: 64
+                        }} />
+                    </Link>
+                </div>
                 <div className="flex gap-2">
                     {
                         !isAuth && <Button onClick={handleShowLoginModal} label="Iniciar Sessión" />
