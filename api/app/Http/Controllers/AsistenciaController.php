@@ -9,14 +9,21 @@ class AsistenciaController extends Controller
 {
     public function index(Request $request)
     {
+        $fromDate = $request->input('fromDate');
+        $toDate = $request->input('toDate');
         $searchQuery = $request->input('query');
         $perPage = $request->input('perPage', 10);
 
-        $asistencias = Asistencia::join('visitantes', 'asistencias.visitante_id', '=', 'visitantes.id')
+        $formattedFromDate = date('Y-m-d', strtotime($fromDate));
+        $formattedToDate = date('Y-m-d', strtotime($toDate));
+
+        $asistencias = Asistencia::when($formattedFromDate && $formattedToDate, function ($query) use ($formattedFromDate, $formattedToDate) {
+            return $query->whereBetween('fecha_registro', [$formattedFromDate, $formattedToDate]);
+        })
             ->when($searchQuery, function ($query) use ($searchQuery) {
                 return $query->where(function ($subQuery) use ($searchQuery) {
-                    $subQuery->where('visitantes.dni', $searchQuery)
-                        ->orWhere('visitantes.nombres', 'like', '%' . $searchQuery . '%');
+                    $subQuery->where('documento_visitante', $searchQuery)
+                        ->orWhere('nombres_visitante', 'like', '%' . $searchQuery . '%');
                 });
             })
             ->paginate($perPage);
@@ -26,6 +33,7 @@ class AsistenciaController extends Controller
 
     public function store(Request $request)
     {
+
         $asistencia = Asistencia::create($request->all());
         return response()->json($asistencia, 201);
     }

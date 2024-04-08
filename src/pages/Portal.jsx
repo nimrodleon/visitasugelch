@@ -6,6 +6,7 @@ import { Paginator } from "primereact/paginator"
 import { DataTable } from "primereact/datatable"
 import { Column } from "primereact/column"
 import { useNavigate } from "react-router-dom"
+import { Panel } from "primereact/panel"
 
 export const Portal = () => {
     const navigate = useNavigate()
@@ -28,9 +29,9 @@ export const Portal = () => {
     return (
         <Fragment>
             <Header />
-            <main className="mx-2">
-                <h3 className="my-1">REGISTRO DE VISITAS</h3>
-                <div className="flex gap-3 mb-3">
+            <Panel header="Registro de Visitas" className="m-2">
+                <h3 className="text-center">Opciones de Busqueda</h3>
+                <div className="flex justify-content-center gap-3 mb-3">
                     <Calendar value={dates} onChange={(e) => setDates(e.value)} selectionMode="range" showIcon />
                     <span className="p-input-icon-left">
                         <i className="pi pi-search" />
@@ -52,7 +53,7 @@ export const Portal = () => {
                     <Column field="observación" header="Observación"></Column>
                 </DataTable>
                 <Paginator first={first} rows={rows} totalRecords={120} rowsPerPageOptions={[10, 20, 30]} onPageChange={onPageChange} />
-            </main>
+            </Panel>
         </Fragment>
     )
 }

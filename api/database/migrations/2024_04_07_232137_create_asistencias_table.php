@@ -16,17 +16,18 @@ return new class extends Migration
             $table->string('fecha_registro')->nullable();
             $table->string('fecha_visita')->nullable();
             $table->unsignedBigInteger('visitante_id')->nullable();
+            $table->string('nombres_visitante')->nullable();
+            $table->string('documento_visitante')->nullable();
             $table->unsignedBigInteger('entidad_id')->nullable();
+            $table->string('rzn_social_entidad')->nullable();
             $table->unsignedBigInteger('funcionario_id')->nullable();
+            $table->string('nombres_funcionario')->nullable();
             $table->string('hora_ingreso')->nullable();
             $table->string('hora_salida')->nullable();
             $table->string('motivo_visita')->nullable();
             $table->unsignedBigInteger('lugar_id')->nullable();
+            $table->string('nombre_lugar')->nullable();
             $table->string('observaciones')->nullable();
-            $table->foreign('visitante_id')->references('id')->on('visitantes');
-            $table->foreign('entidad_id')->references('id')->on('entidades');
-            $table->foreign('funcionario_id')->references('id')->on('funcionarios');
-            $table->foreign('lugar_id')->references('id')->on('lugares');
         });
     }
 

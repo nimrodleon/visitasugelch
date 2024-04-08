@@ -276,7 +276,6 @@ export const ListaVisitas = () => {
                 <DataTable value={products} tableStyle={{ minWidth: '50rem' }}>
                     <Column field="fecha_registro" header="Fecha de Registro"></Column>
                     <Column field="fecha_visita" header="Fecha de Visita"></Column>
-                    <Column field="entidad_visitada" header="Entidad Visitada"></Column>
                     <Column field="visitante" header="Visitante"></Column>
                     <Column field="dni" header="Documento del visitante"></Column>
                     <Column field="entidad_del_visitante" header="Entidad del visitante"></Column>
