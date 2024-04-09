@@ -6,7 +6,6 @@ import { DataTable } from "primereact/datatable"
 import { Column } from "primereact/column"
 import { Paginator } from "primereact/paginator"
 import { Button } from "primereact/button"
-import { RegistrarVisitaModal } from "./RegistrarVisitaModal"
 import { InputTextarea } from "primereact/inputtextarea"
 import { Panel } from "primereact/panel"
 import { AutoComplete } from "primereact/autocomplete"
@@ -15,6 +14,7 @@ import { buscarVisitantePorDni, createAsistencia, getAllLugares, getAsistencias,
 import { Toast } from "primereact/toast"
 import { v4 as uuidv4 } from "uuid"
 import * as Yup from "yup"
+import { InputDialog } from "../../components/InputDialog"
 
 const VisitaSchema = Yup.object().shape({
     dni: Yup.string().required('D.N.I es requerido'),
@@ -47,6 +47,9 @@ export const ListaVisitas = () => {
         first: 0, rows: 0, totalRecords: 0
     })
     const [visible, setVisible] = useState(false)
+    const [inputDialogData, setInputDialogData] = useState({
+        title: '', label: '', value: '', origin: ''
+    })
 
     useEffect(() => {
         getAllLugares().then(response => setLugares(response))
@@ -225,6 +228,40 @@ export const ListaVisitas = () => {
         setFilteredFuncionarios(_filteredItems)
     }
 
+    const agregarEntidad = () => {
+        setInputDialogData({
+            title: 'Agregar Entidad',
+            label: 'Ingrese nombre de la entidad',
+            value: '',
+            origin: 'ENTIDAD'
+        })
+        setVisible(true)
+    }
+
+    const agregarLugar = () => {
+        setInputDialogData({
+            title: 'Agregar Lugar y/o Oficina',
+            label: 'Ingrese nombre de la Oficina',
+            value: '',
+            origin: 'LUGAR'
+        })
+        setVisible(true)
+    }
+
+    const agregarFuncionario = () => {
+        setInputDialogData({
+            title: 'Agregar Funcionario',
+            label: 'Ingrese nombre del Funcionario',
+            value: '',
+            origin: 'FUNCIONARIO'
+        })
+        setVisible(true)
+    }
+
+    const saveChangesDialog = (data) => {
+        console.log(data)
+    }
+
     return (
         <Fragment key={uuid}>
             <Header />
@@ -273,7 +310,7 @@ export const ListaVisitas = () => {
                                         style={{ width: '100%' }} inputStyle={{ width: '100%' }} />
                                     <label htmlFor="username">Entidad del Visitante</label>
                                 </span>
-                                <Button icon="pi pi-plus" className="p-button-secondary" />
+                                <Button type="button" onClick={agregarEntidad} icon="pi pi-plus" className="p-button-secondary" />
                             </div>
                         </div>
                     </div>
@@ -295,7 +332,7 @@ export const ListaVisitas = () => {
                                         style={{ width: '100%' }} inputStyle={{ width: '100%' }} />
                                     <label htmlFor="username">Lugar y/o Oficina</label>
                                 </span>
-                                <Button icon="pi pi-plus" className="p-button-secondary" />
+                                <Button type="button" onClick={agregarLugar} icon="pi pi-plus" className="p-button-secondary" />
                             </div>
                         </div>
                         <div className="col">
@@ -312,7 +349,7 @@ export const ListaVisitas = () => {
                                         style={{ width: '100%' }} inputStyle={{ width: '100%' }} />
                                     <label htmlFor="username">Funcionario</label>
                                 </span>
-                                <Button icon="pi pi-plus" className="p-button-secondary" />
+                                <Button type="button" onClick={agregarFuncionario} icon="pi pi-plus" className="p-button-secondary" />
                             </div>
                         </div>
                         <div className="col">
@@ -381,6 +418,12 @@ export const ListaVisitas = () => {
                     <Column field="motivo_visita" header="Motivo"></Column>
                     <Column field="nombre_lugar" header="Lugar Especifico"></Column>
                     <Column field="observaciones" header="Observación"></Column>
+                    <Column body={(rowData) => (
+                        <div className="flex justify-content-end gap-2">
+                            <Button disabled={false} icon="pi pi-check-circle" rounded severity="info" />
+                            <Button icon="pi pi-trash" rounded severity="danger" />
+                        </div>
+                    )}></Column>
                 </DataTable>
                 <Paginator
                     first={pagination.first}
@@ -390,10 +433,11 @@ export const ListaVisitas = () => {
                     onPageChange={onPageChange} />
             </Panel>
             <Toast ref={toast} />
-            <RegistrarVisitaModal
+            <InputDialog
                 visible={visible}
                 setVisible={setVisible}
-            />
+                data={inputDialogData}
+                saveChanges={saveChangesDialog} />
         </Fragment>
     )
 }

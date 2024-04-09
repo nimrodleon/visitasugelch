@@ -75,7 +75,6 @@ export const Portal = () => {
         }
     })
 
-
     const onPageChange = (event) => {
         const currentPage = event.first / event.rows + 1
         getAsistencias(
