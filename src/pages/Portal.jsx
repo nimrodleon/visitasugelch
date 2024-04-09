@@ -96,7 +96,7 @@ export const Portal = () => {
     return (
         <Fragment>
             <Header />
-            <Panel header="Registro de Visitas" className="mx-2">
+            <Panel header="Registro de Visitas" className="m-2">
                 <h3 className="text-center">Opciones de Busqueda</h3>
                 <div className="flex justify-content-center gap-3 mb-3">
                     <Calendar
