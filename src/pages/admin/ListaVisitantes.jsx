@@ -1,12 +1,11 @@
 import { Fragment, useState } from "react"
-import { Header } from "../../components"
+import { Header, VisitanteModal } from "../../components"
 import { Calendar } from "primereact/calendar"
 import { InputText } from "primereact/inputtext"
 import { DataTable } from "primereact/datatable"
 import { Column } from "primereact/column"
 import { Paginator } from "primereact/paginator"
 import { Button } from "primereact/button"
-import { VisitanteModal } from "./VisitanteModal"
 import { Panel } from "primereact/panel"
 
 export const ListaVisitantes = () => {

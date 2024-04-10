@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 
 class RoleMiddleware
 {
-    public function handle(Request $request, Closure $next, $role)
+    public function handle(Request $request, Closure $next, ...$roles)
     {
-        if ($request->user->rol != $role) {
+        if (!in_array($request->user->rol, $roles)) {
             // Unauthorized response if user role doesn't match
             return response()->json([
                 'error' => 'User does not have the right role.'

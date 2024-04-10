@@ -1,21 +1,28 @@
 import { Link } from "react-router-dom"
 import image from "../assets/header.jfif"
 import { Button } from 'primereact/button'
-import { Fragment, useEffect, useRef, useState } from "react"
+import { Fragment, useContext, useEffect, useRef, useState } from "react"
 import { LoginModal } from "./LoginModal"
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog"
 import { Menu } from "primereact/menu"
 import { useNavigate } from "react-router-dom"
 import logo from "../assets/logo_ugel_chincheros.png"
+import { UserContext } from "../store"
 
 export const Header = () => {
     const navigate = useNavigate()
     const menuRight = useRef(null)
+    const { userData } = useContext(UserContext)
     const [visible, setVisible] = useState(false)
+
 
     useEffect(() => {
         console.log('Header rendered')
     }, [])
+
+    useEffect(() => {
+        console.log(userData)
+    }, [userData])
 
     const isAuth = !!localStorage.getItem('AuthToken')
 
@@ -32,13 +39,17 @@ export const Header = () => {
                     label: 'Visitantes',
                     icon: 'pi pi-users',
                     command: () => navigate('/admin/visitantes')
-                },
-                {
-                    label: 'Usuarios',
-                    icon: 'pi pi-lock',
-                    command: () => navigate('/admin/usuarios')
                 }
             ]
+        }
+    ]
+
+    const adminItems = [
+        ...items,
+        {
+            label: 'Usuarios',
+            icon: 'pi pi-lock',
+            command: () => navigate('/admin/usuarios')
         }
     ]
 
@@ -89,12 +100,12 @@ export const Header = () => {
                     {
                         isAuth && (
                             <Fragment>
-                                <span>Admin</span>
+                                <span>{userData && userData.nombres}</span>
                                 <Button severity="danger" onClick={handleLogout} label="Cerrar Sessión" />
                                 <Button icon="pi pi-bars"
                                     onClick={(event) => menuRight.current.toggle(event)}
                                     severity="secondary" />
-                                <Menu model={items} popup ref={menuRight} popupAlignment="right" className="mt-2" />
+                                <Menu model={userData && userData.rol === 'admin' ? adminItems : items} popup ref={menuRight} popupAlignment="right" className="mt-2" />
                             </Fragment>
                         )
                     }

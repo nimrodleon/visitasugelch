@@ -4,3 +4,4 @@ export const FormModalType = {
 }
 
 export * from './user'
+export * from './UserProvider'

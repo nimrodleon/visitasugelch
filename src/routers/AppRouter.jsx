@@ -6,7 +6,7 @@ import { AdminRouter } from "./AdminRouter"
 export const AppRouter = () => {
     return (
         <BrowserRouter>
-            <Routes>                
+            <Routes>
                 <Route path="/admin/*" element={
                     <PrivateRoute>
                         <AdminRouter />

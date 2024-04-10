@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState } from "react"
+import { Fragment, useContext, useEffect, useRef, useState } from "react"
 import { Header, ListaEntidadesModal, ListaFuncionariosModal, ListaLugaresModal } from "../../components"
 import { Calendar } from "primereact/calendar"
 import { InputText } from "primereact/inputtext"
@@ -15,6 +15,7 @@ import { Toast } from "primereact/toast"
 import { v4 as uuidv4 } from "uuid"
 import * as Yup from "yup"
 import { InputDialog } from "../../components/InputDialog"
+import { UserContext } from "../../store"
 
 const VisitaSchema = Yup.object().shape({
     dni: Yup.string().required('D.N.I es requerido'),
@@ -36,6 +37,7 @@ export const ListaVisitas = () => {
     const [uuid, setUuid] = useState(uuidv4())
     const [visita, setVisita] = useState({})
     const toast = useRef(null)
+    const { userData } = useContext(UserContext)
     const [entidades, setEntidades] = useState([])
     const [filteredEntidades, setFilteredEntidades] = useState([])
     const [lugares, setLugares] = useState([])

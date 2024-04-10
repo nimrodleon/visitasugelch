@@ -4,9 +4,9 @@ import { Dialog } from "primereact/dialog"
 import { Dropdown } from "primereact/dropdown"
 import { InputText } from "primereact/inputtext"
 import * as Yup from "yup"
-import { FormModalType, useUserStore } from "../../store"
 import { useEffect } from "react"
-import { createUser } from "../../api"
+import { FormModalType, useUserStore } from "../store"
+import { createUser } from "../api"
 
 const UserSchema = Yup.object().shape({
     dni: Yup.string().required('D.N.I es requerido'),

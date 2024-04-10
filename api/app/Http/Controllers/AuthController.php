@@ -44,4 +44,9 @@ class AuthController extends Controller
             'token' => $jwt,
         ]);
     }
+
+    public function userData(Request $request)
+    {
+        return response()->json($request->user);
+    }
 }
