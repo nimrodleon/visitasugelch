@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('entidades', function (Blueprint $table) {
             $table->id();
-            $table->string('ruc')->unique();
+            $table->string('ruc')->unique()->nullable();
             $table->string('rzn_social')->nullable();
             $table->unsignedBigInteger('visitante_id');
             $table->foreign('visitante_id')->references('id')->on('visitantes');

@@ -34,15 +34,7 @@ export const Header = () => {
                     command: () => navigate('/admin/visitantes')
                 },
                 {
-                    label: 'Lugares',
-                    icon: 'pi pi-sitemap'
-                },
-                {
-                    label: 'Funcionarios',
-                    icon: 'pi pi-users'
-                },
-                {
-                    label: 'Config. Accesos',
+                    label: 'Usuarios',
                     icon: 'pi pi-lock',
                     command: () => navigate('/admin/usuarios')
                 }
@@ -75,8 +67,8 @@ export const Header = () => {
 
     return (
         <Fragment>
-            <header className="flex justify-content-between align-items-center shadow-2 px-2">
-                <div className="flex gap-2">
+            <header className="flex justify-content-between shadow-2 px-2">
+                <div className="flex align-items-center gap-2">
                     <Link to="/">
                         <img src={image} alt="header" style={{
                             width: 600,
@@ -90,13 +82,14 @@ export const Header = () => {
                         }} />
                     </Link>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex align-items-center gap-2">
                     {
                         !isAuth && <Button onClick={handleShowLoginModal} label="Iniciar Sessión" />
                     }
                     {
                         isAuth && (
                             <Fragment>
+                                <span>Admin</span>
                                 <Button severity="danger" onClick={handleLogout} label="Cerrar Sessión" />
                                 <Button icon="pi pi-bars"
                                     onClick={(event) => menuRight.current.toggle(event)}

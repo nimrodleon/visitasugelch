@@ -12,6 +12,7 @@ import { getUsers } from "../../api"
 import { useUserStore } from "../../store/user"
 import { FormModalType } from "../../store"
 import { useFormik } from "formik"
+import { Panel } from "primereact/panel"
 
 export const ListaUsuarios = () => {
     const users = useUserStore(state => state.users)
@@ -66,9 +67,9 @@ export const ListaUsuarios = () => {
     return (
         <Fragment>
             <Header />
-            <main className="mx-2">
-                <h3 className="my-1">LISTA DE USUARIOS</h3>
-                <div className="flex gap-3 mb-3">
+            <Panel header="Lista de Usuarios" className="m-2">
+                <h3 className="text-center">Opciones de Busqueda</h3>
+                <div className="flex justify-content-center gap-3 mb-3">
                     <span className="p-input-icon-left">
                         <i className="pi pi-search" />
                         <InputText
@@ -98,7 +99,7 @@ export const ListaUsuarios = () => {
                     )}></Column>
                 </DataTable>
                 <Paginator first={first} rows={rows} totalRecords={120} rowsPerPageOptions={[10, 20, 30]} onPageChange={onPageChange} />
-            </main>
+            </Panel>
             <UsuarioModal
                 visible={visible}
                 setVisible={setVisible}

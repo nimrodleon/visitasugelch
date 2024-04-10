@@ -7,6 +7,7 @@ import { Column } from "primereact/column"
 import { Paginator } from "primereact/paginator"
 import { Button } from "primereact/button"
 import { VisitanteModal } from "./VisitanteModal"
+import { Panel } from "primereact/panel"
 
 export const ListaVisitantes = () => {
     const [dates, setDates] = useState(null)
@@ -27,9 +28,9 @@ export const ListaVisitantes = () => {
     return (
         <Fragment>
             <Header />
-            <main className="mx-2">
-                <h3 className="my-1">LISTA DE VISITANTES</h3>
-                <div className="flex gap-3 mb-3">
+            <Panel header="Lista de Visitantes" className="m-2">
+                <h3 className="text-center">Opciones de Busqueda</h3>
+                <div className="flex justify-content-center gap-3 mb-3">
                     <span className="p-input-icon-left">
                         <i className="pi pi-search" />
                         <InputText placeholder="Buscar" />
@@ -42,7 +43,7 @@ export const ListaVisitantes = () => {
                     <Column field="apellidos" header="Apellidos"></Column>
                 </DataTable>
                 <Paginator first={first} rows={rows} totalRecords={120} rowsPerPageOptions={[10, 20, 30]} onPageChange={onPageChange} />
-            </main>
+            </Panel>
             <VisitanteModal
                 visible={visible}
                 setVisible={setVisible}

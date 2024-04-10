@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useRef, useState } from "react"
-import { Header } from "../../components"
+import { Header, ListaEntidadesModal, ListaFuncionariosModal, ListaLugaresModal } from "../../components"
 import { Calendar } from "primereact/calendar"
 import { InputText } from "primereact/inputtext"
 import { DataTable } from "primereact/datatable"
@@ -50,6 +50,10 @@ export const ListaVisitas = () => {
     const [inputDialogData, setInputDialogData] = useState({
         title: '', label: '', value: '', origin: ''
     })
+    // ===================== modales =====================
+    const [visibleEntidades, setVisibleEntidades] = useState(false)
+    const [visibleLugares, setVisibleLugares] = useState(false)
+    const [visibleFuncionarios, setVisibleFuncionarios] = useState(false)
 
     useEffect(() => {
         getAllLugares().then(response => setLugares(response))
@@ -238,6 +242,10 @@ export const ListaVisitas = () => {
         setVisible(true)
     }
 
+    const showModalEntidades = () => {
+        setVisibleEntidades(true)
+    }
+
     const agregarLugar = () => {
         setInputDialogData({
             title: 'Agregar Lugar y/o Oficina',
@@ -248,6 +256,10 @@ export const ListaVisitas = () => {
         setVisible(true)
     }
 
+    const showModalLugares = () => {
+        setVisibleLugares(true)
+    }
+
     const agregarFuncionario = () => {
         setInputDialogData({
             title: 'Agregar Funcionario',
@@ -256,6 +268,10 @@ export const ListaVisitas = () => {
             origin: 'FUNCIONARIO'
         })
         setVisible(true)
+    }
+
+    const showModalFuncionarios = () => {
+        setVisibleFuncionarios(true)
     }
 
     const saveChangesDialog = (data) => {
@@ -310,7 +326,8 @@ export const ListaVisitas = () => {
                                         style={{ width: '100%' }} inputStyle={{ width: '100%' }} />
                                     <label htmlFor="username">Entidad del Visitante</label>
                                 </span>
-                                <Button type="button" onClick={agregarEntidad} icon="pi pi-plus" className="p-button-secondary" />
+                                <Button type="button" onClick={showModalEntidades} severity="info" icon="pi pi-cog" />
+                                <Button type="button" severity="secondary" onClick={agregarEntidad} icon="pi pi-plus" />
                             </div>
                         </div>
                     </div>
@@ -332,7 +349,8 @@ export const ListaVisitas = () => {
                                         style={{ width: '100%' }} inputStyle={{ width: '100%' }} />
                                     <label htmlFor="username">Lugar y/o Oficina</label>
                                 </span>
-                                <Button type="button" onClick={agregarLugar} icon="pi pi-plus" className="p-button-secondary" />
+                                <Button type="button" onClick={showModalLugares} severity="info" icon="pi pi-cog" />
+                                <Button type="button" severity="secondary" onClick={agregarLugar} icon="pi pi-plus" />
                             </div>
                         </div>
                         <div className="col">
@@ -349,7 +367,8 @@ export const ListaVisitas = () => {
                                         style={{ width: '100%' }} inputStyle={{ width: '100%' }} />
                                     <label htmlFor="username">Funcionario</label>
                                 </span>
-                                <Button type="button" onClick={agregarFuncionario} icon="pi pi-plus" className="p-button-secondary" />
+                                <Button type="button" onClick={showModalFuncionarios} severity="info" icon="pi pi-cog" />
+                                <Button type="button" severity="secondary" onClick={agregarFuncionario} icon="pi pi-plus" />
                             </div>
                         </div>
                         <div className="col">
@@ -438,6 +457,15 @@ export const ListaVisitas = () => {
                 setVisible={setVisible}
                 data={inputDialogData}
                 saveChanges={saveChangesDialog} />
+            <ListaEntidadesModal
+                visible={visibleEntidades}
+                setVisible={setVisibleEntidades} />
+            <ListaLugaresModal
+                visible={visibleLugares}
+                setVisible={setVisibleLugares} />
+            <ListaFuncionariosModal
+                visible={visibleFuncionarios}
+                setVisible={setVisibleFuncionarios} />
         </Fragment>
     )
 }
