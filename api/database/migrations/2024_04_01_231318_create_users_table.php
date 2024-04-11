@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('dni')->unique()->nullable();
             $table->string('nombres')->nullable();
-            $table->string('apellidos')->nullable();
             $table->string('rol')->nullable();
             $table->string('usuario')->unique();
             $table->string('password')->nullable();

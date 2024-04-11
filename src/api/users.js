@@ -50,6 +50,20 @@ export async function updateUserById(id, user) {
     }
 }
 
+// Function to change password by ID
+export async function passwordChangeById(id, password) {
+    try {
+        const response = await axios.patch(`/users/${id}`, {
+            password
+        })
+        return response.data
+    } catch (error) {
+        console.error(error)
+        throw error
+    }
+}
+
+
 // Function to delete a user by ID
 export async function deleteUserById(id) {
     try {

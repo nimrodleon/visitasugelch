@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 
@@ -35,8 +36,16 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $user = User::create($request->all());
-        return response()->json($user, 201);
+        try {
+            $user = User::create($request->all());
+            return response()->json($user, 201);
+        } catch (QueryException $e) {
+            if ($e->getCode() == 23000) {
+                return response()->json([
+                    'error' => 'El usuario o DNI ya se encuentra registrado'
+                ], 400);
+            }
+        }
     }
 
     public function show($id)
@@ -47,8 +56,24 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
+        try {
+            $user = User::findOrFail($id);
+            $user->update($request->all());
+            return response()->json($user);
+        } catch (QueryException $e) {
+            if ($e->getCode() == 23000) {
+                return response()->json([
+                    'error' => 'El usuario o DNI ya se encuentra registrado'
+                ], 400);
+            }
+        }
+    }
+
+    public function passwordChange(Request $request, $id)
+    {
         $user = User::findOrFail($id);
-        $user->update($request->all());
+        $user->password = $request->input('password');
+        $user->save();
         return response()->json($user);
     }
 

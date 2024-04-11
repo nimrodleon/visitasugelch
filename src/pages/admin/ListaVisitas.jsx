@@ -10,12 +10,13 @@ import { InputTextarea } from "primereact/inputtextarea"
 import { Panel } from "primereact/panel"
 import { AutoComplete } from "primereact/autocomplete"
 import { useFormik } from "formik"
-import { buscarVisitantePorDni, createAsistencia, getAllLugares, getAsistencias, getEntities, getFuncionariosByLugarId } from "../../api"
+import { buscarVisitantePorDni, createAsistencia, deleteAsistencia, getAllLugares, getAsistencias, getEntities, getFuncionariosByLugarId, marcarHoraSalida } from "../../api"
 import { Toast } from "primereact/toast"
 import { v4 as uuidv4 } from "uuid"
 import * as Yup from "yup"
 import { InputDialog } from "../../components/InputDialog"
 import { UserContext } from "../../store"
+import { confirmDialog } from "primereact/confirmdialog"
 
 const VisitaSchema = Yup.object().shape({
     dni: Yup.string().required('D.N.I es requerido'),
@@ -280,6 +281,50 @@ export const ListaVisitas = () => {
         console.log(data)
     }
 
+    const handleMarcarHoraSalida = (asistencia) => {
+        confirmDialog({
+            header: 'Confirmación',
+            message: '¿Está seguro de marcar la hora de salida?',
+            icon: 'pi pi-exclamation-triangle',
+            acceptClassName: 'p-button-danger',
+            acceptLabel: 'Si',
+            rejectLabel: 'No',
+            accept: () => {
+                marcarHoraSalida(asistencia.id).then(response => {
+                    const newData = asistencias.data.map(item => {
+                        if (item.id === asistencia.id) {
+                            return response
+                        }
+                        return item
+                    })
+                    setAsistencias({ ...asistencias, data: newData })
+                })
+            },
+        })
+    }
+
+    const handleDeleteAsistencia = (asistencia) => {
+        if (userData.rol !== 'admin') {
+            toast.current.show({ severity: 'error', summary: 'Info', detail: 'No tiene los permisos requeridos!' })
+        } else {
+            confirmDialog({
+                message: '¿Desea eliminar este registro?',
+                header: 'Confirmación de Eliminación',
+                icon: 'pi pi-info-circle',
+                defaultFocus: 'reject',
+                acceptClassName: 'p-button-danger',
+                acceptLabel: 'Si',
+                rejectLabel: 'No',
+                accept: () => {
+                    deleteAsistencia(asistencia.id).then(() => {
+                        const newData = asistencias.data.filter(asist => asist.id !== asistencia.id)
+                        setAsistencias({ ...asistencias, data: newData })
+                    })
+                }
+            })
+        }
+    }
+
     return (
         <Fragment key={uuid}>
             <Header />
@@ -441,8 +486,8 @@ export const ListaVisitas = () => {
                     <Column field="observaciones" header="Observación"></Column>
                     <Column body={(rowData) => (
                         <div className="flex justify-content-end gap-2">
-                            <Button disabled={false} icon="pi pi-check-circle" rounded severity="info" />
-                            <Button icon="pi pi-trash" rounded severity="danger" />
+                            <Button type="button" onClick={() => handleMarcarHoraSalida(rowData)} disabled={rowData.hora_salida} icon="pi pi-check-circle" rounded severity="info" />
+                            <Button type="button" onClick={() => handleDeleteAsistencia(rowData)} icon="pi pi-trash" rounded severity="danger" />
                         </div>
                     )}></Column>
                 </DataTable>

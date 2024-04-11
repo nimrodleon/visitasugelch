@@ -61,15 +61,17 @@ class AsistenciaController extends Controller
         return response()->json($asistencia);
     }
 
-    public function marcar_hora_salida(Asistencia $asistencia)
+    public function marcar_hora_salida($id)
     {
+        $asistencia = Asistencia::findOrFail($id);
         $asistencia->hora_salida = date('H:i:s');
         $asistencia->save();
         return response()->json($asistencia);
     }
 
-    public function destroy(Asistencia $asistencia)
+    public function destroy($id)
     {
+        $asistencia = Asistencia::findOrFail($id);
         $asistencia->delete();
         return response()->json(null, 204);
     }

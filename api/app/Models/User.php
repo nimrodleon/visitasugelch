@@ -19,7 +19,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var string[]
      */
     protected $fillable = [
-        'dni', 'nombres', 'apellidos', 'rol', 'usuario', 'password'
+        'dni', 'nombres', 'rol', 'usuario'
     ];
 
     /**
@@ -32,4 +32,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     ];
 
     public $timestamps = false;
+
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = app('hash')->make($value);
+    }
 }

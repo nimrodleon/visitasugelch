@@ -16,6 +16,7 @@ $router->group(['middleware' => 'jwt'], function () use ($router) {
         $router->post('/users', 'UserController@store');
         $router->get('/users/{id}', 'UserController@show');
         $router->put('/users/{id}', 'UserController@update');
+        $router->patch('/users/{id}', 'UserController@passwordChange');
         $router->delete('/users/{id}', 'UserController@destroy');
         $router->post('/lugares', 'LugarController@store');
         $router->get('/lugares/{id}', 'LugarController@show');
@@ -25,14 +26,14 @@ $router->group(['middleware' => 'jwt'], function () use ($router) {
         $router->get('/funcionarios/{id}', 'FuncionarioController@show');
         $router->put('/funcionarios/{id}', 'FuncionarioController@update');
         $router->delete('/funcionarios/{id}', 'FuncionarioController@destroy');
-        $router->delete('/asistencias/{asistencia}', 'AsistenciaController@destroy');
+        $router->delete('/asistencias/{id}', 'AsistenciaController@destroy');
         $router->delete('/entidades/{id}', 'EntidadController@destroy');
         $router->delete('/visitantes/{id}', 'VisitanteController@destroy');
     });
     $router->group(['middleware' => 'role:admin,user'], function () use ($router) {
         $router->post('/asistencias', 'AsistenciaController@store');
         $router->get('/asistencias/{asistencia}', 'AsistenciaController@show');
-        $router->patch('/asistencias/{asistencia}', 'AsistenciaController@marcar_hora_salida');
+        $router->patch('/asistencias/{id}', 'AsistenciaController@marcar_hora_salida');
         $router->get('/visitantes', 'VisitanteController@index');
         $router->post('/visitantes', 'VisitanteController@store');
         $router->get('/visitantes/{id}', 'VisitanteController@show');
