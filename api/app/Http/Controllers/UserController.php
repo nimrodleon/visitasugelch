@@ -4,12 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
 
 class UserController extends Controller
 {
     public function index(Request $request)
     {
+        $currentPage = $request->input('currentPage', 1);
         $perPage = $request->input('perPage', 10);
+
+        Paginator::currentPageResolver(function () use ($currentPage) {
+            return $currentPage;
+        });
+
         $query = User::query();
 
         if ($request->has('query')) {

@@ -1,10 +1,11 @@
 import { axios } from "./axios"
 
 // Function to get all users
-export async function getUsers(query = '', perPage = 10) {
+export async function getUsers(query = '', currentPage = 1, perPage = 10) {
     try {
         const response = await axios.get('/users', {
             params: {
+                currentPage,
                 perPage,
                 query
             }
