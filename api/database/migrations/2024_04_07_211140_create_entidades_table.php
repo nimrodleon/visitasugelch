@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('ruc')->unique()->nullable();
             $table->string('rzn_social')->nullable();
             $table->unsignedBigInteger('visitante_id');
-            $table->foreign('visitante_id')->references('id')->on('visitantes');
+            $table->foreign('visitante_id')->references('id')->on('visitantes')->onDelete('cascade');
         });
     }
 

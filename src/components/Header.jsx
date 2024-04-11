@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import image from "../assets/header.jfif"
 import { Button } from 'primereact/button'
-import { Fragment, useContext, useEffect, useRef, useState } from "react"
+import { Fragment, useContext, useRef, useState } from "react"
 import { LoginModal } from "./LoginModal"
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog"
 import { Menu } from "primereact/menu"
@@ -14,15 +14,6 @@ export const Header = () => {
     const menuRight = useRef(null)
     const { userData } = useContext(UserContext)
     const [visible, setVisible] = useState(false)
-
-
-    useEffect(() => {
-        console.log('Header rendered')
-    }, [])
-
-    useEffect(() => {
-        console.log(userData)
-    }, [userData])
 
     const isAuth = !!localStorage.getItem('AuthToken')
 

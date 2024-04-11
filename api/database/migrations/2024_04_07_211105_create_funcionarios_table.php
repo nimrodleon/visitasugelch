@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('dni')->unique()->nullable();
             $table->string('nombres_completos')->nullable();
             $table->unsignedBigInteger('lugar_id')->nullable();
-            $table->foreign('lugar_id')->references('id')->on('lugares');
+            $table->foreign('lugar_id')->references('id')->on('lugares')->onDelete('cascade');
         });
     }
 

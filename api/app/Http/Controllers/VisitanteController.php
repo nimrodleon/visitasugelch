@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Entidad;
 use App\Models\Visitante;
 use App\Services\PadronService;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
 
 class VisitanteController extends Controller
 {
@@ -18,15 +20,19 @@ class VisitanteController extends Controller
 
     public function index(Request $request)
     {
+        $searchQuery = $request->input('query');
+        $currentPage = $request->input('currentPage', 1);
         $perPage = $request->input('perPage', 10);
+
+        Paginator::currentPageResolver(function () use ($currentPage) {
+            return $currentPage;
+        });
+
         $query = Visitante::query();
 
-        $searchQuery = $request->input('query');
         if ($searchQuery) {
             $query->where(function ($q) use ($searchQuery) {
-                $q->where('nombres', 'LIKE', '%' . $searchQuery . '%')
-                    ->orWhere('ap_paterno', 'LIKE', '%' . $searchQuery . '%')
-                    ->orWhere('ap_materno', 'LIKE', '%' . $searchQuery . '%')
+                $q->where('nombres_completos', 'LIKE', '%' . $searchQuery . '%')
                     ->orWhere('dni', 'LIKE', '%' . $searchQuery . '%');
             });
         }
@@ -38,8 +44,16 @@ class VisitanteController extends Controller
 
     public function store(Request $request)
     {
-        $visitante = Visitante::create($request->all());
-        return response()->json($visitante, 201);
+        try {
+            $visitante = Visitante::create($request->all());
+            return response()->json($visitante, 201);
+        } catch (QueryException $e) {
+            if ($e->getCode() == 23000) {
+                return response()->json([
+                    'error' => 'El DNI ya se encuentra registrado'
+                ], 400);
+            }
+        }
     }
 
     public function show($id)
@@ -81,9 +95,17 @@ class VisitanteController extends Controller
 
     public function update(Request $request, $id)
     {
-        $visitante = Visitante::findOrFail($id);
-        $visitante->update($request->all());
-        return response()->json($visitante, 200);
+        try {
+            $visitante = Visitante::findOrFail($id);
+            $visitante->update($request->all());
+            return response()->json($visitante, 200);
+        } catch (QueryException $e) {
+            if ($e->getCode() == 23000) {
+                return response()->json([
+                    'error' => 'El DNI ya se encuentra registrado'
+                ], 400);
+            }
+        }
     }
 
     public function destroy($id)

@@ -1,11 +1,12 @@
 import { axios } from "./axios"
 
-export async function getVisitantes(query = '', perPage = 10) {
+export async function getVisitantes(query = '', currentPage = 1, perPage = 10) {
     try {
         const response = await axios.get('/visitantes', {
             params: {
                 query,
-                perPage
+                currentPage,
+                perPage,
             }
         })
         return response.data
