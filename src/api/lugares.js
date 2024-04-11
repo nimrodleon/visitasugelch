@@ -9,6 +9,21 @@ export async function getAllLugares() {
     }
 }
 
+export async function searchLugares(query = '', currentPage = 1, perPage = 10) {
+    try {
+        const response = await axios.get('/search-lugares', {
+            params: {
+                query,
+                currentPage,
+                perPage,
+            }
+        })
+        return response.data
+    } catch (error) {
+        throw new Error(error.response.data.message)
+    }
+}
+
 export async function createLugar(data) {
     try {
         const response = await axios.post('/lugares', data)

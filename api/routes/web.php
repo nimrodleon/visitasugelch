@@ -45,6 +45,7 @@ $router->group(['middleware' => 'jwt'], function () use ($router) {
         $router->put('/entidades/{id}', 'EntidadController@update');
         $router->get('/entidades/{visitante_id}/visitante', 'EntidadController@index');
         $router->get('/lugares', 'LugarController@index');
+        $router->get('/search-lugares', 'LugarController@search');
         $router->get('/funcionarios/{lugar_id}/lugar', 'FuncionarioController@index');
     });
 });
