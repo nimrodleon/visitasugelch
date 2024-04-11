@@ -1,19 +1,32 @@
 import { create } from "zustand"
 
-export const useUserStore = create((set) => ({
-    users: [],
+export const useUserStore = create((set, get) => ({
+    // ============================ Modal User ============================
+    currentUser: {},
+    setCurrentUser: (currentUser) => set({ currentUser }),
+    formType: '',
+    setFormType: (formType) => set({ formType }),
+    // ============================ Lista de User ============================
+    users: { data: [] },
     setUsers: (users) => set({ users }),
-    selectedUser: {
-        id: 0,
-        dni: '',
-        nombres: '',
-        apellidos: '',
-        rol: '',
-        usuario: '',
-        password: ''
-    },
-    setSelectedUser: (selectedUser) => set({ selectedUser }),
-    addUser: (user) => set(state => ({ users: [...state.users, user] })),
-    userFormType: 'add',
-    setUserFormType: (userFormType) => set({ userFormType }),
+    // ============================ Funciones ============================
+    addUser: (user) => set({
+        users: {
+            ...get().users, data: [
+                user, ...get().users.data
+            ]
+        }
+    }),
+    editUser: (user) => set({
+        users: {
+            ...get().users,
+            data: get().users.data.map(v => v.id === user.id ? user : v)
+        }
+    }),
+    deleteUser: (userId) => set({
+        users: {
+            ...get().users,
+            data: get().users.data.filter(v => v.id !== userId)
+        }
+    }),
 }))
