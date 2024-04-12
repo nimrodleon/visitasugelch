@@ -18,10 +18,12 @@ $router->group(['middleware' => 'jwt'], function () use ($router) {
         $router->put('/users/{id}', 'UserController@update');
         $router->patch('/users/{id}', 'UserController@passwordChange');
         $router->delete('/users/{id}', 'UserController@destroy');
+        $router->get('/search-lugares', 'LugarController@search');
         $router->post('/lugares', 'LugarController@store');
         $router->get('/lugares/{id}', 'LugarController@show');
         $router->put('/lugares/{id}', 'LugarController@update');
         $router->delete('/lugares/{id}', 'LugarController@destroy');
+        $router->get('/search-funcionarios', 'FuncionarioController@search');
         $router->post('/funcionarios', 'FuncionarioController@store');
         $router->get('/funcionarios/{id}', 'FuncionarioController@show');
         $router->put('/funcionarios/{id}', 'FuncionarioController@update');
@@ -44,8 +46,8 @@ $router->group(['middleware' => 'jwt'], function () use ($router) {
         $router->get('/entidades/{id}', 'EntidadController@show');
         $router->put('/entidades/{id}', 'EntidadController@update');
         $router->get('/entidades/{visitante_id}/visitante', 'EntidadController@index');
+        $router->get('/search-entidades/{visitante_id}', 'EntidadController@search');
         $router->get('/lugares', 'LugarController@index');
-        $router->get('/search-lugares', 'LugarController@search');
         $router->get('/funcionarios/{lugar_id}/lugar', 'FuncionarioController@index');
     });
 });

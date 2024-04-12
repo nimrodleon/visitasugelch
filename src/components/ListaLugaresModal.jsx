@@ -3,14 +3,13 @@ import { DataTable } from "primereact/datatable"
 import { InputText } from "primereact/inputtext"
 import { Button } from "primereact/button"
 import { Column } from "primereact/column"
-import { Fragment, useContext, useRef, useState } from "react"
+import { Fragment, useState } from "react"
 import { LugarFormModal } from "./LugarFormModal"
 import { useLugarStore } from "../store/lugar"
 import { useFormik } from "formik"
 import { deleteLugarById, searchLugares } from "../api"
-import { FormModalType, UserContext } from "../store"
+import { FormModalType } from "../store"
 import { Paginator } from "primereact/paginator"
-import { Toast } from "primereact/toast"
 import { confirmDialog } from "primereact/confirmdialog"
 
 export const ListaLugaresModal = (props) => {
@@ -28,8 +27,6 @@ export const ListaLugaresModal = (props) => {
         setFormType: state.setFormType,
         borrarLugar: state.borrarLugar,
     }))
-    const toast = useRef(null)
-    const { userData } = useContext(UserContext)
     const [pagination, setPagination] = useState({
         first: 0, rows: 0, totalRecords: 0
     })
@@ -84,24 +81,20 @@ export const ListaLugaresModal = (props) => {
     }
 
     const handleDeleteLugar = (lugar) => {
-        if (userData.rol !== 'admin') {
-            toast.current.show({ severity: 'error', summary: 'Info', detail: 'No tiene los permisos requeridos!' })
-        } else {
-            confirmDialog({
-                message: '¿Desea eliminar este registro?',
-                header: 'Confirmación de Eliminación',
-                icon: 'pi pi-info-circle',
-                defaultFocus: 'reject',
-                acceptClassName: 'p-button-danger',
-                acceptLabel: 'Si',
-                rejectLabel: 'No',
-                accept: () => {
-                    deleteLugarById(lugar.id).then(() => {
-                        borrarLugar(lugar.id)
-                    })
-                }
-            })
-        }
+        confirmDialog({
+            message: '¿Desea eliminar este registro?',
+            header: 'Confirmación de Eliminación',
+            icon: 'pi pi-info-circle',
+            defaultFocus: 'reject',
+            acceptClassName: 'p-button-danger',
+            acceptLabel: 'Si',
+            rejectLabel: 'No',
+            accept: () => {
+                deleteLugarById(lugar.id).then(() => {
+                    borrarLugar(lugar.id)
+                })
+            }
+        })
     }
 
     return (
@@ -150,7 +143,6 @@ export const ListaLugaresModal = (props) => {
             <LugarFormModal
                 visible={lugarVisible}
                 setVisible={setLugarVisible} />
-            <Toast ref={toast} />
         </Fragment>
     )
 }

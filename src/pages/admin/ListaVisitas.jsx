@@ -17,6 +17,7 @@ import * as Yup from "yup"
 import { InputDialog } from "../../components/InputDialog"
 import { UserContext } from "../../store"
 import { confirmDialog } from "primereact/confirmdialog"
+import { useAsistenciaStore } from "../../store/asistencia"
 
 const VisitaSchema = Yup.object().shape({
     dni: Yup.string().required('D.N.I es requerido'),
@@ -36,14 +37,29 @@ const VisitaSchema = Yup.object().shape({
 
 export const ListaVisitas = () => {
     const [uuid, setUuid] = useState(uuidv4())
-    const [visita, setVisita] = useState({})
+    const {
+        visita,
+        setVisita,
+        entidades,
+        setEntidades,
+        lugares,
+        setLugares,
+        funcionarios,
+        setFuncionarios,
+    } = useAsistenciaStore(state => ({
+        visita: state.visita,
+        setVisita: state.setVisita,
+        entidades: state.entidades,
+        setEntidades: state.setEntidades,
+        lugares: state.lugares,
+        setLugares: state.setLugares,
+        funcionarios: state.funcionarios,
+        setFuncionarios: state.setFuncionarios,
+    }))
     const toast = useRef(null)
     const { userData } = useContext(UserContext)
-    const [entidades, setEntidades] = useState([])
     const [filteredEntidades, setFilteredEntidades] = useState([])
-    const [lugares, setLugares] = useState([])
     const [filteredLugares, setFilteredLugares] = useState([])
-    const [funcionarios, setFuncionarios] = useState([])
     const [filteredFuncionarios, setFilteredFuncionarios] = useState([])
     const [asistencias, setAsistencias] = useState({ data: [] })
     const [pagination, setPagination] = useState({
@@ -373,8 +389,11 @@ export const ListaVisitas = () => {
                                         style={{ width: '100%' }} inputStyle={{ width: '100%' }} />
                                     <label htmlFor="username">Entidad del Visitante</label>
                                 </span>
-                                <Button type="button" onClick={showModalEntidades} severity="info" icon="pi pi-cog" />
-                                <Button type="button" severity="secondary" onClick={agregarEntidad} icon="pi pi-plus" />
+                                <Button type="button"
+                                    onClick={showModalEntidades}
+                                    disabled={!visita.id}
+                                    severity="info"
+                                    icon="pi pi-cog" />
                             </div>
                         </div>
                     </div>
@@ -396,8 +415,12 @@ export const ListaVisitas = () => {
                                         style={{ width: '100%' }} inputStyle={{ width: '100%' }} />
                                     <label htmlFor="username">Lugar y/o Oficina</label>
                                 </span>
-                                <Button type="button" onClick={showModalLugares} severity="info" icon="pi pi-cog" />
-                                <Button type="button" severity="secondary" onClick={agregarLugar} icon="pi pi-plus" />
+                                <Button
+                                    type="button"
+                                    onClick={showModalLugares}
+                                    disabled={userData.rol !== 'admin'}
+                                    severity="info"
+                                    icon="pi pi-cog" />
                             </div>
                         </div>
                         <div className="col">
@@ -414,8 +437,12 @@ export const ListaVisitas = () => {
                                         style={{ width: '100%' }} inputStyle={{ width: '100%' }} />
                                     <label htmlFor="username">Funcionario</label>
                                 </span>
-                                <Button type="button" onClick={showModalFuncionarios} severity="info" icon="pi pi-cog" />
-                                <Button type="button" severity="secondary" onClick={agregarFuncionario} icon="pi pi-plus" />
+                                <Button
+                                    type="button"
+                                    onClick={showModalFuncionarios}
+                                    disabled={userData.rol !== 'admin'}
+                                    severity="info"
+                                    icon="pi pi-cog" />
                             </div>
                         </div>
                         <div className="col">

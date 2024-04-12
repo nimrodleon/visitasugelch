@@ -10,6 +10,21 @@ export async function getFuncionariosByLugarId(lugarId) {
     }
 }
 
+export async function searchFuncionarios(query = '', currentPage = 1, perPage = 10) {
+    try {
+        const response = await axios.get('/search-funcionarios', {
+            params: {
+                query,
+                currentPage,
+                perPage,
+            }
+        })
+        return response.data
+    } catch (error) {
+        throw new Error(error.response.data.message)
+    }
+}
+
 export async function createFuncionario(funcionarioData) {
     try {
         const response = await axios.post('/funcionarios', funcionarioData)

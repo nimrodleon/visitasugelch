@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Funcionario;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
 
 class FuncionarioController extends Controller
 {
@@ -11,6 +12,29 @@ class FuncionarioController extends Controller
     {
         $funcionarios = Funcionario::where('lugar_id', $lugar_id)->get();
         return response()->json($funcionarios);
+    }
+
+    public function search(Request $request)
+    {
+        $querySearch = $request->input('query', '');
+        $currentPage = $request->input('currentPage', 1);
+        $perPage = $request->input('perPage', 10);
+
+        Paginator::currentPageResolver(function () use ($currentPage) {
+            return $currentPage;
+        });
+
+        $query = Funcionario::query();
+
+        $query->join('lugares', 'funcionarios.lugar_id', '=', 'lugares.id')
+            ->select('funcionarios.*', 'lugares.id as fk', 'lugares.nombre')
+            ->where(function ($q) use ($querySearch) {
+                $q->where('funcionarios.nombres_completos', 'LIKE', '%' . $querySearch . '%');
+            });
+
+        $lugares = $query->paginate($perPage);
+
+        return response()->json($lugares);
     }
 
     public function store(Request $request)
