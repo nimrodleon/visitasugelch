@@ -24,8 +24,7 @@ class UserController extends Controller
             $searchQuery = $request->input('query');
             $query->where(function ($q) use ($searchQuery) {
                 $q->where('dni', $searchQuery)
-                    ->orWhere('nombres', 'like', '%' . $searchQuery . '%')
-                    ->orWhere('apellidos', 'like', '%' . $searchQuery . '%');
+                    ->orWhere('nombres', 'like', '%' . $searchQuery . '%');
             });
         }
 
