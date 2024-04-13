@@ -216,7 +216,7 @@ export const ListaVisitas = () => {
             _filteredItems = [...entidades]
         } else {
             _filteredItems = entidades.filter((item) => {
-                return item.rzn_social.toLowerCase().startsWith(event.query.toLowerCase())
+                return item.rzn_social.toLowerCase().includes(event.query.toLowerCase())
             })
         }
 
@@ -230,7 +230,7 @@ export const ListaVisitas = () => {
             _filteredItems = [...lugares]
         } else {
             _filteredItems = lugares.filter((item) => {
-                return item.nombre.toLowerCase().startsWith(event.query.toLowerCase())
+                return item.nombre.toLowerCase().includes(event.query.toLowerCase())
             })
         }
 
@@ -244,7 +244,7 @@ export const ListaVisitas = () => {
             _filteredItems = [...funcionarios]
         } else {
             _filteredItems = funcionarios.filter((item) => {
-                return item.nombres_completos.toLowerCase().startsWith(event.query.toLowerCase())
+                return item.nombres_completos.toLowerCase().includes(event.query.toLowerCase())
             })
         }
 
@@ -507,13 +507,17 @@ export const ListaVisitas = () => {
                     <Column field="rzn_social_entidad" header="Entidad del visitante"></Column>
                     <Column field="nombres_funcionario" header="Funcionario visitado"></Column>
                     <Column field="hora_ingreso" header="Hora de Ingreso"></Column>
-                    <Column field="hora_salida" header="Hora de Salida"></Column>
+                    <Column header="Hora de Salida" body={(rowData) => (
+                        !rowData.hora_salida ? (
+                            <Button type="button" onClick={() =>
+                                handleMarcarHoraSalida(rowData)} icon="pi pi-check-circle" rounded severity="info" />
+                        ) : rowData.hora_salida
+                    )} />
                     <Column field="motivo_visita" header="Motivo"></Column>
                     <Column field="nombre_lugar" header="Lugar Especifico"></Column>
                     <Column field="observaciones" header="Observación"></Column>
                     <Column body={(rowData) => (
                         <div className="flex justify-content-end gap-2">
-                            <Button type="button" onClick={() => handleMarcarHoraSalida(rowData)} disabled={rowData.hora_salida} icon="pi pi-check-circle" rounded severity="info" />
                             <Button type="button" onClick={() => handleDeleteAsistencia(rowData)} icon="pi pi-trash" rounded severity="danger" />
                         </div>
                     )}></Column>
