@@ -123,7 +123,7 @@ export const Portal = () => {
                             onKeyDown={(e) => e.key === 'Enter' && queryForm.handleSubmit()}
                             placeholder="Buscar" />
                     </span>
-                    <Button label="Excel" severity="success" />
+                    {/* <Button label="Excel" severity="success" /> */}
                 </div>
                 <DataTable value={asistencias.data} tableStyle={{ minWidth: '50rem' }}>
                     <Column field="fecha_registro" header="Fecha de Registro"></Column>
